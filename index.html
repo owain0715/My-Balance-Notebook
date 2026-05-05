@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>私のバランスノート</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <!-- 月切り替えゾーン -->
+    <nav id="month-nav">
+      <button id="prev-month">←</button>
+      <span id="current-month"></span>
+      <button id="next-month">→</button>
+    </nav>
+
+    <div id="expenses-page" class="page">
+      <!-- カテゴリページ -->
+      <section id="category-area">
+        <div id="category-input-area">
+          <input
+            id="expense-category-input"
+            type="text"
+            placeholder="支出カテゴリ"
+          />
+          <select id="type-select">
+            <option value="variable">変動費</option>
+            <option value="fixed">固定費</option>
+          </select>
+          <button id="addBtn">追加</button>
+        </div>
+
+        <ul id="category-list"></ul>
+      </section>
+
+      <!-- 金額入力 -->
+      <section id="expense-form" class="hidden">
+        <div id="expense-limit-area">
+          <input id="expense-limit-input" type="number" />
+          <button id="limitBtn">上限を設定</button>
+          <ul id="limit-ul"></ul>
+        </div>
+
+        <div id="progress-area">
+          <p id="day-progress"></p>
+          <p id="alert"></p>
+
+          <div id="progress-bar">
+            <div id="progress"></div>
+          </div>
+
+          <div id="scale">
+            <span>0%</span>
+            <span>25%</span>
+            <span>50%</span>
+            <span>75%</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <!-- 固定費メッセージ -->
+        <p id="fixed-message"></p>
+
+        <!-- 支出入力欄 -->
+        <div id="expense-input-area">
+          <input id="memo-input" type="text" placeholder="内容" />
+          <input id="amount-input" type="number" />
+          <input type="date" id="date-input" />
+        </div>
+
+        <div>
+          <button id="amountBtn">支出を追加</button>
+        </div>
+
+        <!-- 支出インラインモーダル -->
+        <div id="edit-modal" class="modal modal-purple hidden">
+          <div class="modal-content">
+            <p id="modal-title">【支出を編集してください】</p>
+
+            <label>
+              メモ：
+              <input id="edit-memo" type="text" />
+            </label>
+
+            <label>
+              金額：
+              <input id="edit-amount" type="number" />
+            </label>
+
+            <div class="modal-actions">
+              <button id="save-btn">変更を保存</button>
+              <button id="cancel-btn">キャンセル</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 支出リスト描画欄 -->
+        <div id="amount-header">
+          <span id="amount-title">【今月の支出リスト】</span>
+          <button id="list-toggle-btn">▼</button>
+        </div>
+
+        <ul id="amount-list"></ul>
+        <p id="expense-sum"></p>
+      </section>
+    </div>
+
+    <!-- incomeエリア -->
+    <div id="income-page" class="page hidden">
+      <!-- 収入カテゴリ入力 -->
+      <div id="income-category-area">
+        <div id="income-category-input-area">
+          <input id="income-input" type="text" placeholder="収入カテゴリ" />
+          <button id="income-add-btn">追加</button>
+        </div>
+        <ul id="income-category-list"></ul>
+      </div>
+
+      <!-- 金額入力 -->
+      <section id="income-form" class="hidden">
+        <div id="income-input-area">
+          <input id="income-memo-input" type="text" placeholder="内容" />
+          <input id="income-amount-input" type="number" />
+          <input id="income-date-input" type="date" />
+        </div>
+        <button id="income-amount-btn">収入を追加</button>
+
+        <div id="income-edit-modal" class="modal modal-purple hidden">
+          <div class="modal-content">
+            <p id="income-modal-title">【収入を編集してください】</p>
+            <label>
+              メモ：
+              <input id="income-edit-memo" type="text" />
+            </label>
+
+            <label>
+              金額：
+              <input id="income-edit-amount" type="number" />
+            </label>
+
+            <div class="modal-actions">
+              <button id="income-save-btn">変更を保存</button>
+              <button id="income-cancel-btn">キャンセル</button>
+            </div>
+          </div>
+        </div>
+
+        <ul id="income-amount-list"></ul>
+      </section>
+    </div>
+
+    <section id="analytics-page" class="page hidden">
+      <!-- アナリティクスページ・円グラフ -->
+      <div>
+        <div class="analytics-card">
+          <p class="sub-text">
+            🔍
+            <span class="marker"
+              >今月はどこにお金を使っているか見てみましょう！</span
+            >
+          </p>
+          <h3 class="section-title">カテゴリ別支出</h3>
+          <canvas id="pie-chart"></canvas>
+        </div>
+      </div>
+
+      <div class="analytics-card">
+        <div id="line-graph">
+          <h3 class="section-title">収支の推移</h3>
+          <canvas id="line-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- 月別 -->
+      <section id="monthly-data">
+        <div class="analytics-card">
+          <h3 class="section-title">先月との支出比較</h3>
+          <p id="monthly-report"></p>
+        </div>
+      </section>
+
+      <!-- 使いすぎ/節約ランキング -->
+      <div id="ranking" class="card"></div>
+    </section>
+
+    <div id="settings-page" class="page hidden">設定ページ</div>
+
+    <nav id="menu-buttons">
+      <button data-page="expenses">支出管理💸</button>
+      <button data-page="income">収入管理💵</button>
+      <button data-page="analytics">分析💹</button>
+      <button data-page="settings">設定⚙️</button>
+    </nav>
+
+    <!-- DOMより後に実行する -->
+    <script src="script.js" defer></script>
+  </body>
+</html>
