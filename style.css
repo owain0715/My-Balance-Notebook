@@ -237,18 +237,20 @@ button:hover {
 }
 
 #expense-sum {
-  font-size: 24px;
-  font-weight: bold;
-  color: #615b9a;
+  font-size: 20px;
+  font-weight: 600;
+  color: #7a74a8;
   letter-spacing: 0.5px;
 
-  margin-top: 12px;
-  padding: 6px 10px;
+  margin-top: 8px;
+  padding: 4px 8px;
 
-  background: rgba(175, 163, 212, 0.15);
+  background: rgba(175, 163, 212, 0.08);
 
-  border-radius: 10px;
-  display: inline-block;
+  border-radius: 8px;
+
+  display: block;
+  text-align: right;
 }
 
 /* 支出ページ */
@@ -390,7 +392,7 @@ button:hover {
   transition: 0.3s ease;
 
   background: #fff;
-  padding: 10px;
+  padding: 12px 10px 16px;
   margin-bottom: 16px;
   border-radius: 10px;
 
@@ -436,6 +438,7 @@ button:hover {
 
 #amount-title {
   font-size: 18px;
+  font-weight: bold;
 }
 
 #list-toggle-btn {
@@ -490,15 +493,14 @@ button:hover {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   border-radius: 16px;
-  padding: 16px;
-  margin: 14px 0;
-  margin-bottom: 12px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  padding: 18px 16px;
+  margin: 16px 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 /* 日付の横に区切り線 */
 .card-date {
-  margin-top: 20px;
+  margin-top: 24px;
   padding: 8px 0;
   border-top: 1px solid #ddd;
   color: #555;
@@ -507,6 +509,7 @@ button:hover {
 }
 
 .card li {
+  padding: 6px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -514,9 +517,12 @@ button:hover {
 
 .card .amount {
   margin-left: auto;
+
   font-weight: bold;
-  font-size: 16px;
+  font-size: 15px;
   color: #555;
+
+  letter-spacing: 0.3px;
 }
 
 .card button {
