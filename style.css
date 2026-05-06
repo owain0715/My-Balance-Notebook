@@ -20,7 +20,7 @@ body {
   font-family: "Helvetica Neue", "Noto Sans JP", sans-serif;
   color: #696272;
   padding: 16px;
-  padding-bottom: calc(140px + env(safe-area-inset-bottom));
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
 
   max-width: 420px;
   margin: 0 auto;
@@ -124,8 +124,12 @@ input::placeholder {
 
 #category-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+
+  padding: 10px 4px;
   gap: 10px;
+
+  font-size: 11px;
 }
 
 #category-list li {
@@ -233,7 +237,7 @@ button:hover {
 }
 
 #expense-sum {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
   color: #615b9a;
   letter-spacing: 0.5px;
@@ -301,12 +305,16 @@ button:hover {
   position: absolute;
   width: 100%;
   text-align: center;
-  font-size: 12px;
+  white-space: nowrap;
+
+  font-size: 11px;
+  font-weight: bold;
   color: white;
+
   top: 0;
   left: 0;
+
   line-height: 20px;
-  font-weight: bold;
 }
 
 #scale {
@@ -482,8 +490,8 @@ button:hover {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   border-radius: 16px;
-  padding: 14px;
-  margin: 12px 0;
+  padding: 16px;
+  margin: 14px 0;
   margin-bottom: 12px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
@@ -518,6 +526,7 @@ button:hover {
 /* 月次レポート欄 */
 #monthly-report {
   font-weight: bold;
+  font-size: 14px;
   padding: 10px;
 }
 
@@ -721,7 +730,8 @@ button:hover {
   border-radius: 16px;
 
   background: rgba(255, 255, 255, 0.783);
-  backdrop-filter: blur(10px);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(16px);
 
   overflow: hidden;
 }
@@ -769,7 +779,7 @@ button:hover {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 /* アナリティクスページのタイトルを強調 */
@@ -785,12 +795,12 @@ button:hover {
 .analytics-card {
   background: #fff;
   border-radius: 16px;
-  padding: 16px;
+  padding: 14px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .sub-text {
-  font-size: 12px;
+  font-size: 10px;
   color: #666;
   margin-bottom: 8px;
 }
@@ -821,14 +831,23 @@ button:hover {
 }
 
 /* ランキング部分 */
-#ranking {
-  margin-top: 20px;
-}
-
 #ranking h3 {
   margin-bottom: 8px;
 }
 
 #ranking p {
   margin: 4px 0;
+}
+
+/* スマホに入れた後の修正 */
+#monthly-report,
+#alert,
+#day-progress {
+  line-height: 1.6;
+}
+
+#expense-input-area,
+#income-input-area {
+  min-width: 0;
+  flex-wrap: wrap;
 }
