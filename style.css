@@ -425,11 +425,12 @@ button:hover {
 #expense-input-area {
   display: flex;
   gap: 8px;
-  margin-top: 8px;
+  flex-wrap: wrap;
 }
 
 #expense-input-area input {
   flex: 1;
+  min-width: 120px;
 }
 
 #date-input {
@@ -442,6 +443,9 @@ button:hover {
 
   font-size: 14px;
   color: #555;
+
+  flex: 1.5;
+  min-width: 140px;
 }
 
 #amount-header {
