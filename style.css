@@ -9,6 +9,7 @@ html {
   background: linear-gradient(135deg, #cff4f9, #fdf0ff, #fff6f9) fixed;
 
   overflow-y: scroll;
+  scroll-behavior: auto;
 
   height: auto;
   min-height: 100%;
