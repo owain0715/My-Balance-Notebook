@@ -41,6 +41,13 @@ body {
   width: 100%;
 }
 
+/* スマホ操作時に勝手にズームされないように */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
 #month-nav {
   display: flex;
   justify-content: space-between;
