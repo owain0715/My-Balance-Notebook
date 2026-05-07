@@ -1,3 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   --base: #ffffff;
   --subtle: #f5f7fa;
@@ -8,11 +18,10 @@
 html {
   background: linear-gradient(135deg, #cff4f9, #fdf0ff, #fff6f9) fixed;
 
-  overflow-y: scroll;
-  scroll-behavior: auto;
-
   height: auto;
   min-height: 100%;
+
+  scroll-behavior: auto;
 }
 
 body {
@@ -25,17 +34,21 @@ body {
 
   line-height: 1.5;
 
+  width: 100%;
   max-width: 420px;
   margin: 0 auto;
 
   display: flex;
   flex-direction: column;
 
-  min-height: 100dvh;
+  min-height: 100vh;
+
   overflow-x: hidden;
+  overscroll-behavior-x: none;
+
+  position: relative;
 }
 
-/* 横ブレ防止 */
 html,
 body {
   overflow-x: hidden;
@@ -92,7 +105,6 @@ input {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(8px);
 
-  font-size: 16px;
   color: #555;
 
   outline: none;
@@ -791,6 +803,7 @@ button:hover {
 
   background: rgba(255, 255, 255, 0.783);
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  /* backdrop-filter: blur(16px); */
   backdrop-filter: none;
 
   overflow: hidden;
@@ -912,10 +925,210 @@ button:hover {
   flex-wrap: wrap;
 }
 
-/* ブレの原因追求 */
 .card:hover,
 button:hover,
 #category-list li:hover,
 #income-category-list li:hover {
   transform: none;
+}
+
+/* =========================
+   軽量化 + デザイン維持版
+========================= */
+
+/* GPU暴走防止 */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+
+  -webkit-overflow-scrolling: touch;
+
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* 全体共通 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* transition軽量化 */
+* {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* hover系を軽量化 */
+button:hover,
+.card:hover,
+#category-list li:hover,
+#income-category-list li:hover {
+  transform: none;
+}
+
+/* =========================
+   blurを必要最低限に制限
+========================= */
+
+/* blur完全削除 */
+.card,
+#amount-list,
+#income-amount-list,
+#progress-area,
+#expense-form,
+#income-form,
+#category-area,
+#income-category-area,
+#income-category-input-area,
+#alert,
+#month-nav,
+#type-select,
+input,
+#date-input,
+#category-list li,
+#income-category-list li {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* =========================
+   背景を軽量化
+========================= */
+
+.card,
+.analytics-card,
+#amount-list,
+#income-amount-list,
+#expense-form,
+#income-form,
+#progress-area,
+#category-area,
+#income-category-area,
+#income-category-input-area {
+  background: rgba(255, 255, 255, 0.92);
+
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* フォーム */
+input,
+#date-input,
+#type-select {
+  background: rgba(255, 255, 255, 0.95);
+
+  border: 1px solid rgba(0, 0, 0, 0.06);
+
+  box-shadow: none;
+}
+
+/* =========================
+   progress軽量化
+========================= */
+
+#progress-bar {
+  box-shadow: none;
+  background: #ececec;
+}
+
+#progress {
+  background-image: none;
+  box-shadow: none;
+}
+
+/* =========================
+   固定メニュー最適化
+========================= */
+
+#menu-buttons {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.06);
+
+  will-change: transform;
+}
+
+/* =========================
+   ボタン軽量化
+========================= */
+
+button {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* =========================
+   編集中だけ少し演出残す
+========================= */
+
+.editing {
+  background: rgba(182, 207, 250, 0.18);
+
+  border: 1px solid rgba(182, 207, 250, 0.4);
+
+  box-shadow: 0 2px 8px rgba(182, 207, 250, 0.12);
+
+  transform: none;
+}
+
+/* =========================
+   analytics軽量化
+========================= */
+
+.analytics-card {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* =========================
+   スクロール改善
+========================= */
+
+#amount-list,
+#income-amount-list,
+#expenses-page {
+  contain: content;
+
+  -webkit-overflow-scrolling: touch;
+
+  overscroll-behavior: contain;
+}
+
+/* =========================
+   iPhone Safari対策
+========================= */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+
+  background: transparent;
+}
+
+/* =========================
+   アニメーション停止
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
