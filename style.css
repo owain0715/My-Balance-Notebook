@@ -791,7 +791,7 @@ button:hover {
 
   background: rgba(255, 255, 255, 0.783);
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(16px);
+  backdrop-filter: none;
 
   overflow: hidden;
 }
@@ -910,4 +910,12 @@ button:hover {
 #income-input-area {
   min-width: 0;
   flex-wrap: wrap;
+}
+
+/* ブレの原因追求 */
+.card:hover,
+button:hover,
+#category-list li:hover,
+#income-category-list li:hover {
+  transform: none;
 }
