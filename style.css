@@ -34,6 +34,13 @@ body {
   overflow-x: hidden;
 }
 
+/* 横ブレ防止 */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 #month-nav {
   display: flex;
   justify-content: space-between;
