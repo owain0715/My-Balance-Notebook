@@ -893,7 +893,18 @@ function renderExpenseList(state) {
       card.append(innerUl);
       amountList.append(card);
     });
-  expensesSumEl.textContent = `今月の合計：¥${state.sum.toLocaleString()}`;
+
+  expensesSumEl.innerHTML = `
+<div>
+  <span class="marker">
+    今月の${state.selectedCategory?.name}合計
+  </span>
+  <br>
+
+  <span class="sum-amount marker">
+    ¥${state.sum.toLocaleString()}
+  </span>
+</div>`;
 
   //前月比データ取得
   if (state.selectedCategory) {
@@ -994,6 +1005,7 @@ function renderProgress(state, meta) {
 
     const forecastEl = document.createElement("li");
     forecastEl.textContent = `このペースだと月末には¥${forecast.toLocaleString()}になる見込みです`;
+    forecastEl.classList.add("marker");
 
     limitUl.append(forecastEl);
   }
