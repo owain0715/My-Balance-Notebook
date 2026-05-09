@@ -841,12 +841,13 @@ button:hover {
 
 /* マーカーを引きたい部分に */
 .marker {
-  display: inline;
-  background: linear-gradient(transparent 60%, #ffeaa7 60%);
-  padding: 0 2px;
+  text-decoration: underline;
+  text-decoration-color: #ffeaa7;
+  
+  text-decoration-thickness: 0.55em;
+  text-underline-offset: -0.2em;
 
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
+  text-decoration-skip-ink: none;
 }
 
 #monthly-data {
