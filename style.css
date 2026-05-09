@@ -748,9 +748,13 @@ button:hover {
 
 /* メディアクエリ/スマホ想定 */
 #menu-buttons {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.06);
+
   position: fixed;
   bottom: calc(16px + env(safe-area-inset-bottom));
   left: 50%;
+  transform: translateX(-50%); 
 
   width: calc(100% - 24px);
   max-width: 420px;
@@ -763,16 +767,13 @@ button:hover {
   padding: 8px;
   border-radius: var(--radius-md);
 
-  background: rgba(255, 255, 255, 0.783);
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
-
   overflow: hidden;
 }
 
 /* ボタン */
 #menu-buttons button {
   flex: 1;
-  min-width: 0; /* ←これで潰れ防止（重要） */
+  min-width: 0;
 
   padding: 6px 4px;
   font-size: 12px;
@@ -929,16 +930,6 @@ input,
 #progress {
   background-image: none;
   box-shadow: none;
-}
-
-/* =========================
-   固定メニュー最適化
-========================= */
-
-#menu-buttons {
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.06);
-  will-change: transform;
 }
 
 /* =========================
