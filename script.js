@@ -284,7 +284,8 @@ amountBtn.addEventListener("click", () => {
   amountInput.value = "";
 
   //入力後はメモ欄にフォーカス、日付も今日に戻す（ユーザー体験の向上）
-  memoInput.focus();
+  //結局消した（スマホ使用想定で、memoInputにフォーカスされてしまうと入力欄が邪魔をして、新規追加された支出が見えにくくなるため）
+  // memoInput.focus();
   dateInput.value = new Date().toISOString().slice(0, 10);
 });
 
