@@ -521,7 +521,7 @@ button:hover {
 
   border-radius: 18px;
 
-  padding: 20px 16px;
+  padding: 18px 16px;
   margin: 20px 0;
 }
 
@@ -748,16 +748,13 @@ button:hover {
 
 /* メディアクエリ/スマホ想定 */
 #menu-buttons {
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.06);
-
   position: fixed;
   bottom: calc(16px + env(safe-area-inset-bottom));
   left: 50%;
-  transform: translateX(-50%); 
+  transform: translateX(-50%);
 
   width: calc(100% - 24px);
-  max-width: 420px;
+  width: min(100%, 420px);
 
   display: flex;
   justify-content: space-between;
@@ -767,13 +764,16 @@ button:hover {
   padding: 8px;
   border-radius: var(--radius-md);
 
+  background: rgba(255, 255, 255, 0.783);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+
   overflow: hidden;
 }
 
 /* ボタン */
 #menu-buttons button {
   flex: 1;
-  min-width: 0;
+  min-width: 0; /* ←これで潰れ防止（重要） */
 
   padding: 6px 4px;
   font-size: 12px;
@@ -829,7 +829,7 @@ button:hover {
 .analytics-card {
   background: #fff;
   border-radius: var(--radius-md);
-  padding: 14px;
+  padding: 16px 14px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
