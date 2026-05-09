@@ -484,12 +484,25 @@ button:hover {
   margin-top: 4px;
 }
 
+#monthly-report,
+#alert,
+#day-progress,
+#usage-percent {
+  margin: 0;
+  line-height: 1.4;
+}
+
+#usage-percent {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
 #alert {
-  margin-top: 12px;
+  margin-bottom: 10px;
   padding: 8px 12px;
   border-radius: 10px;
 
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(238, 238, 255, 0.927);
 }
 
 .danger {
@@ -509,9 +522,40 @@ button:hover {
 }
 
 #day-progress {
-  font-size: 14px;
-  margin-top: 8px;
-  color: #555;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.forecast-card {
+  margin-top: 10px;
+  padding: 12px 14px;
+
+  border-radius: 14px;
+  border: 1px solid rgba(158, 140, 211, 0.18);
+
+  background: var(--color-border);
+
+  list-style: none;
+}
+
+.forecast-label {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+.forecast-amount {
+  display: inline-block;
+
+  padding: 4px 10px;
+  border-radius: 10px;
+
+  background: rgba(175, 163, 212, 0.14);
+
+  color: #5f5875;
+
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 
 /* カードエリア */
@@ -843,7 +887,7 @@ button:hover {
 .marker {
   text-decoration: underline;
   text-decoration-color: #ffeaa7;
-  
+
   text-decoration-thickness: 0.55em;
   text-underline-offset: -0.2em;
 
@@ -876,13 +920,6 @@ button:hover {
 
 #ranking p {
   margin: 4px 0;
-}
-
-/* スマホに入れた後の修正 */
-#monthly-report,
-#alert,
-#day-progress {
-  line-height: 1.6;
 }
 
 #expense-input-area,
