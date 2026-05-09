@@ -1005,7 +1005,8 @@ function renderProgress(state, meta) {
     const forecast = Math.floor((state.sum / today) * dayInMonth);
 
     const forecastEl = document.createElement("li");
-    forecastEl.textContent = `このペースだと月末には¥${forecast.toLocaleString()}になる見込みです`;
+    forecastEl.innerHTML = `このペースだと、<br>
+    月末には¥${forecast.toLocaleString()}になる見込みです。`;
     forecastEl.classList.add("marker");
 
     limitUl.append(forecastEl);
