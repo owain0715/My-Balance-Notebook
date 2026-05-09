@@ -993,8 +993,9 @@ function renderProgress(state, meta) {
     progressEl.style.width = "0%";
   }
 
-  const usageLi = document.createElement("li");
-  usageLi.textContent = `使用率：${percent}%`;
+  //使用率
+  const usagePercent = document.getElementById("usage-percent");
+  usagePercent.textContent = `現在の使用率：${percent}%`;
 
   const expectedPercent = (today / dayInMonth) * 100;
   const dayPercent = Math.floor((today / dayInMonth) * 100);
@@ -1005,10 +1006,14 @@ function renderProgress(state, meta) {
     const forecast = Math.floor((state.sum / today) * dayInMonth);
 
     const forecastEl = document.createElement("li");
-    forecastEl.innerHTML = `このペースだと、<br>
-    月末には¥${forecast.toLocaleString()}になる見込みです。`;
-    forecastEl.classList.add("marker");
 
+    forecastEl.innerHTML = `
+  <p class="forecast-label">このペースだと…</p>
+  <p class="forecast-amount">
+    月末見込： ¥${forecast.toLocaleString()}
+  </p>
+`;
+    forecastEl.classList.add("forecast-card");
     limitUl.append(forecastEl);
   }
 
@@ -1048,7 +1053,7 @@ function renderProgress(state, meta) {
   progressEl.style.background = getProgressColor(percent);
   dayProgress.textContent = `日数進捗：${dayPercent}% (${today}/${dayInMonth}日)`;
 
-  limitUl.append(usageLi);
+  // limitUl.append(usageLi);
 }
 
 //プログレスバーの色定義
