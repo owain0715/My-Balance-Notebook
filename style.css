@@ -1,26 +1,37 @@
-* {
-  box-sizing: border-box;
-}
-
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+/* ベースデザイン */
 :root {
+  /* color */
+  --color-bg: rgba(255, 255, 255, 0.6);
+  --color-border: rgba(255, 255, 255, 0.4);
+
   --base: #ffffff;
   --subtle: #f5f7fa;
   --accent: #afa3d4;
   --accent-soft: #e9d5ff;
+
+  /* radius */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+
+  /* shadow */
+  --shadow-soft: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  /* spacing */
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
 }
 
 html {
-  background: linear-gradient(135deg, #cff4f9, #fdf0ff, #fff6f9) fixed;
-
+  background: linear-gradient(135deg, #cff4f9, #fdf0ff, #fff6f9);
   height: auto;
   min-height: 100%;
-
   scroll-behavior: auto;
 }
 
@@ -53,31 +64,15 @@ html,
 body {
   overflow-x: hidden;
   width: 100%;
+
+  -webkit-overflow-scrolling: touch;
 }
 
-/* スマホ操作時に勝手にズームされないように */
+/* スマホ操作時に勝手にズームされないように調整 */
 input,
 select,
 textarea {
   font-size: 16px;
-}
-
-#month-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 8px 12px;
-  border-radius: 12px;
-
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(8px);
-
-  margin-bottom: 16px;
-}
-
-#current-month {
-  font-weight: bold;
 }
 
 ul {
@@ -100,15 +95,13 @@ input {
   margin-top: 8px;
 
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--color-border);
 
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(8px);
+  background: var(--color-bg);
 
   color: #555;
 
   outline: none;
-  transition: 0.2s;
 }
 
 input:focus {
@@ -127,11 +120,43 @@ input::placeholder {
   font-weight: bold;
 }
 
+button {
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #afa3d4, #cbbdf6);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  color: white;
+  border-radius: 8px;
+  padding: 8px 14px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* 月切り替え表示部分 */
+#month-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 8px 12px;
+  border-radius: 12px;
+
+  background: var(--color-bg);
+
+  margin-bottom: 16px;
+}
+
+#current-month {
+  font-weight: bold;
+}
+
 /* カテゴリー一覧エリア */
 #category-area {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--color-bg);
 
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   padding: 12px;
   margin-bottom: 16px;
 }
@@ -177,10 +202,7 @@ input::placeholder {
 
   border-radius: 10px;
 
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(6px);
-
-  transition: all 0.2s;
+  background: var(--color-bg);
 }
 
 #type-select {
@@ -190,10 +212,8 @@ input::placeholder {
 
   padding: 10px 36px 10px 12px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
 
   font-size: 14px;
   color: #6f6f6f;
@@ -211,28 +231,7 @@ input::placeholder {
   box-shadow: 0 0 0 2px rgba(175, 163, 212, 0.2);
 }
 
-button {
-  border: none;
-  cursor: pointer;
-  transition: 0.2s;
-  background: linear-gradient(135deg, #afa3d4, #cbbdf6);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  color: white;
-  border-radius: 8px;
-  padding: 8px 14px;
-}
-
-button:active {
-  transform: scale(0.97);
-}
-
-button:hover {
-  transform: translateY(-1px);
-  opacity: 0.9;
-}
-
 #category-list li:hover {
-  transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -265,6 +264,13 @@ button:hover {
   opacity: 1;
 }
 
+/* 支出ページ */
+#expenses-page {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
 #expense-sum {
   font-size: 16px;
   font-weight: bold;
@@ -288,20 +294,138 @@ button:hover {
   font-weight: 700;
 }
 
-/* 支出ページ */
-#expenses-page {
-  flex: 1;
-  overflow-y: auto;
+/* 支出フォーム */
+#expense-form {
+  background: rgba(255, 255, 255, 0.25);
+
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-top: 16px;
+
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+#expense-form input {
+  max-width: 100%;
+}
+
+/* 支出リスト(card部分) */
+#amountBtn {
+  margin: 12px 0 20px;
+  width: 100%;
+}
+
+#amount-list {
   min-height: 0;
+  max-height: 60vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+
+  -webkit-overflow-scrolling: touch;
+
+  background: var(--color-bg);
+
+  padding: 12px 12px 24px;
+  margin-bottom: 16px;
+  border-radius: 10px;
+
+  justify-content: space-between;
+  align-items: center;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+#amount-list.closed {
+  max-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#expense-input-area {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#expense-input-area input {
+  flex: 1;
+  min-width: 120px;
+}
+
+#date-input {
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+
+  font-size: 14px;
+  color: #555;
+
+  flex: 1.5;
+  min-width: 140px;
+}
+
+#amount-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#amount-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#list-toggle-btn {
+  padding: 6px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.6;
+  margin-left: 8px;
+}
+
+.icon-btn:hover {
+  opacity: 1;
+}
+
+.editing {
+  background: linear-gradient(
+    135deg,
+    rgba(182, 207, 250, 0.25),
+    rgba(233, 213, 255, 0.25)
+  );
+  border: 1px solid rgba(182, 207, 250, 0.6);
+  border-radius: 10px;
+
+  box-shadow: 0 4px 12px rgba(182, 207, 250, 0.25);
+
+  position: relative;
+}
+
+.editing::after {
+  content: "編集中";
+  font-size: 10px;
+  color: #b6cffa;
+  position: absolute;
+  top: -6px;
+  right: 6px;
 }
 
 /* プログレスエリア */
 #progress-area {
   border: 2px solid rgba(158, 140, 211, 0.3);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
 
   background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
 
   padding: 10px;
 }
@@ -314,7 +438,6 @@ button:hover {
 
   background: #eee;
   border-radius: 999px;
-  backdrop-filter: blur(6px);
 
   overflow: hidden;
 
@@ -329,10 +452,6 @@ button:hover {
 #progress {
   height: 100%;
   width: 0%;
-  transition:
-    width 0.4s ease,
-    background 0.3s ease;
-
   background-image: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0.3),
@@ -371,7 +490,6 @@ button:hover {
   border-radius: 10px;
 
   background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(6px);
 }
 
 .danger {
@@ -396,159 +514,15 @@ button:hover {
   color: #555;
 }
 
-/* 支出フォーム */
-#expense-form {
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  border-radius: 16px;
-  padding: 16px;
-  margin-top: 16px;
-
-  border: 1px solid rgba(255, 255, 255, 0.4);
-
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-#expense-form input {
-  max-width: 100%;
-}
-
-/* 支出リスト(card部分) */
-#amountBtn {
-  margin: 12px 0 20px;
-  width: 100%;
-}
-
-#amount-list {
-  min-height: 0;
-  max-height: 60vh;
-  overflow-y: auto;
-  scrollbar-width: thin;
-
-  -webkit-overflow-scrolling: touch;
-  transition: 0.3s ease;
-
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
-
-  padding: 12px 12px 24px;
-  margin-bottom: 16px;
-  border-radius: 10px;
-
-  justify-content: space-between;
-  align-items: center;
-
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-#amount-list.closed {
-  max-height: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-#expense-input-area {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-#expense-input-area input {
-  flex: 1;
-  min-width: 120px;
-}
-
-#date-input {
-  padding: 10px 12px;
-  border-radius: 10px;
-
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(8px);
-
-  font-size: 14px;
-  color: #555;
-
-  flex: 1.5;
-  min-width: 140px;
-}
-
-#amount-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#amount-title {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-#list-toggle-btn {
-  padding: 6px 10px;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.icon-btn {
-  background: none;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  opacity: 0.6;
-  transition: 0.2s;
-  margin-left: 8px;
-}
-
-.icon-btn:hover {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.editing {
-  background: linear-gradient(
-    135deg,
-    rgba(182, 207, 250, 0.25),
-    rgba(233, 213, 255, 0.25)
-  );
-  border: 1px solid rgba(182, 207, 250, 0.6);
-  border-radius: 10px;
-
-  box-shadow: 0 4px 12px rgba(182, 207, 250, 0.25);
-
-  transform: scale(1.01);
-  transition: 0.2s;
-
-  position: relative;
-}
-
-.editing::after {
-  content: "編集中";
-  font-size: 10px;
-  color: #b6cffa;
-  position: absolute;
-  top: -6px;
-  right: 6px;
-}
-
 /* カードエリア */
 .card {
   background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 
   border-radius: 18px;
 
   padding: 20px 16px;
   margin: 20px 0;
-
-  transition: 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-2px);
 }
 
 /* 連続カードの間隔を整える */
@@ -620,18 +594,16 @@ button:hover {
 .modal {
   background: rgba(175, 163, 212, 0.15);
   border: 1px solid rgba(175, 163, 212, 0.3);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   padding: 16px;
   margin: 12px 0;
 }
 
-/* 薄紫がテーマ */
 .modal-purple {
   background: rgba(175, 163, 212, 0.15);
   border: 1px solid rgba(175, 163, 212, 0.3);
 }
 
-/* 中身レイアウト */
 .modal-content {
   display: flex;
   flex-direction: column;
@@ -669,17 +641,15 @@ button:hover {
 
 /* 収入管理ゾーン */
 #income-category-area {
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
   padding: 12px;
   margin-bottom: 16px;
 }
 
 #income-category-input-area {
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
   padding: 12px;
   margin-bottom: 16px;
 }
@@ -705,10 +675,7 @@ button:hover {
 
   border-radius: 10px;
 
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(6px);
-
-  transition: all 0.2s;
+  background: var(--color-bg);
 }
 
 #income-category-list li:hover .delete-btn {
@@ -718,21 +685,17 @@ button:hover {
 }
 
 #income-category-list li:hover {
-  transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 #income-form {
   background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   padding: 16px;
   margin-top: 16px;
 
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 #income-input-area {
@@ -788,7 +751,6 @@ button:hover {
   position: fixed;
   bottom: calc(16px + env(safe-area-inset-bottom));
   left: 50%;
-  transform: translateX(-50%);
 
   width: calc(100% - 24px);
   max-width: 420px;
@@ -799,12 +761,10 @@ button:hover {
   gap: 6px;
 
   padding: 8px;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
 
   background: rgba(255, 255, 255, 0.783);
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
-  /* backdrop-filter: blur(16px); */
-  backdrop-filter: none;
 
   overflow: hidden;
 }
@@ -867,7 +827,7 @@ button:hover {
 
 .analytics-card {
   background: #fff;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   padding: 14px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
@@ -880,13 +840,17 @@ button:hover {
 
 /* マーカーを引きたい部分に */
 .marker {
+  display: inline;
   background: linear-gradient(transparent 60%, #ffeaa7 60%);
   padding: 0 2px;
+
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 #monthly-data {
   background: #f5f0ff;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   position: relative;
 }
 
@@ -925,77 +889,6 @@ button:hover {
   flex-wrap: wrap;
 }
 
-.card:hover,
-button:hover,
-#category-list li:hover,
-#income-category-list li:hover {
-  transform: none;
-}
-
-/* =========================
-   軽量化 + デザイン維持版
-========================= */
-
-/* GPU暴走防止 */
-html,
-body {
-  overflow-x: hidden;
-  width: 100%;
-
-  -webkit-overflow-scrolling: touch;
-
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-/* 全体共通 */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-/* transition軽量化 */
-* {
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    opacity 0.2s ease;
-}
-
-/* hover系を軽量化 */
-button:hover,
-.card:hover,
-#category-list li:hover,
-#income-category-list li:hover {
-  transform: none;
-}
-
-/* =========================
-   blurを必要最低限に制限
-========================= */
-
-/* blur完全削除 */
-.card,
-#amount-list,
-#income-amount-list,
-#progress-area,
-#expense-form,
-#income-form,
-#category-area,
-#income-category-area,
-#income-category-input-area,
-#alert,
-#month-nav,
-#type-select,
-input,
-#date-input,
-#category-list li,
-#income-category-list li {
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
 /* =========================
    背景を軽量化
 ========================= */
@@ -1010,8 +903,6 @@ input,
 #category-area,
 #income-category-area,
 #income-category-input-area {
-  background: rgba(255, 255, 255, 0.92);
-
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
 }
 
@@ -1045,30 +936,9 @@ input,
 ========================= */
 
 #menu-buttons {
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-
   background: rgba(255, 255, 255, 0.96);
-
   box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.06);
-
   will-change: transform;
-}
-
-/* =========================
-   ボタン軽量化
-========================= */
-
-button {
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-
-  transition:
-    opacity 0.2s ease,
-    background-color 0.2s ease;
-}
-
-button:active {
-  transform: scale(0.98);
 }
 
 /* =========================
@@ -1105,20 +975,6 @@ button:active {
   -webkit-overflow-scrolling: touch;
 
   overscroll-behavior: contain;
-}
-
-/* =========================
-   iPhone Safari対策
-========================= */
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-
-  pointer-events: none;
-
-  background: transparent;
 }
 
 /* =========================
