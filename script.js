@@ -181,6 +181,7 @@ const mm = String(now.getMonth() + 1).padStart(2, "0");
 const dd = String(now.getDate()).padStart(2, "0");
 
 dateInput.value = `${yyyy}-${mm}-${dd}`;
+incomeDateInput.value = `${yyyy}-${mm}-${dd}`;
 
 //支出リストの表示状態
 let isOpen = true;
