@@ -64,14 +64,17 @@
         <p id="fixed-message"></p>
 
         <!-- 支出入力欄 -->
-        <div id="expense-input-area">
-          <input id="memo-input" type="text" placeholder="内容" />
-          <input id="amount-input" type="number" placeholder="金額" />
-          <input type="date" id="date-input" />
-        </div>
+        <div class="input-card">
+          <p class="form-section-title">支出を追加しましょう</p>
+          <div id="expense-input-area">
+            <input id="memo-input" type="text" placeholder="内容" />
+            <input id="amount-input" type="number" placeholder="金額" />
+            <input type="date" id="date-input" />
+          </div>
 
-        <div>
-          <button id="amountBtn">支出を追加</button>
+          <div>
+            <button id="amountBtn">追加</button>
+          </div>
         </div>
 
         <!-- 支出インラインモーダル -->
@@ -120,12 +123,15 @@
 
       <!-- 金額入力 -->
       <section id="income-form" class="hidden">
-        <div id="income-input-area">
-          <input id="income-memo-input" type="text" placeholder="内容" />
-          <input id="income-amount-input" type="number" placeholder="金額" />
-          <input id="income-date-input" type="date" />
+        <div class="input-card">
+          <p class="form-section-title">収入を追加しましょう</p>
+          <div id="income-input-area">
+            <input id="income-memo-input" type="text" placeholder="内容" />
+            <input id="income-amount-input" type="number" placeholder="金額" />
+            <input id="income-date-input" type="date" />
+          </div>
+          <button id="income-amount-btn">追加</button>
         </div>
-        <button id="income-amount-btn">収入を追加</button>
 
         <div id="income-edit-modal" class="modal modal-purple hidden">
           <div class="modal-content">
