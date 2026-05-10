@@ -684,6 +684,30 @@ button:hover {
 }
 
 /* 収入管理ゾーン */
+#income-amount-list.closed {
+  max-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#income-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 8px;
+}
+
+#income-amount-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#income-list-toggle-btn {
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
 #income-category-area {
   background: var(--color-bg);
   border-radius: var(--radius-md);
@@ -774,13 +798,17 @@ button:hover {
   padding: 10px;
   margin-bottom: 8px;
   border-radius: 10px;
-  background: #fff;
+  background: var(--color-bg);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 #income-amount-list .card {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(175, 163, 212, 0.25);
+}
+
+#income-amount-list .card-date {
+  margin-top: 12px;
 }
 
 /* 円グラフ */
@@ -970,10 +998,7 @@ input,
   box-shadow: none;
 }
 
-/* =========================
-   編集中だけ少し演出残す
-========================= */
-
+/* 編集中だけ少し演出残す */
 .editing {
   background: rgba(182, 207, 250, 0.18);
 
@@ -984,18 +1009,12 @@ input,
   transform: none;
 }
 
-/* =========================
-   analytics軽量化
-========================= */
-
+/* analytics軽量化 */
 .analytics-card {
   background: rgba(255, 255, 255, 0.95);
 }
 
-/* =========================
-   スクロール改善
-========================= */
-
+/* スクロール改善 */
 #amount-list,
 #income-amount-list,
 #expenses-page {
@@ -1006,14 +1025,19 @@ input,
   overscroll-behavior: contain;
 }
 
-/* =========================
-   アニメーション停止
-========================= */
-
+/* アニメーション停止 */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* placeholderの文字調整 */
+#category-input-area input::placeholder,
+#expense-input-area input::placeholder,
+#income-category-input-area input::placeholder,
+#income-input-area input::placeholder {
+  font-size: 12px;
 }
