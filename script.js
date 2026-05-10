@@ -77,16 +77,20 @@ if (savedIncomeCategories) {
 }
 
 //初期カテゴリは食費に
-const defaultCategory = expensesCategories.find((c) => c.name === "食費");
-let selectedCategoryId = defaultCategory?.id ?? null;
+const defaultExpenseCategory = expensesCategories.find(
+  (c) => c.name === "食費",
+);
+let selectedCategoryId = defaultExpenseCategory?.id ?? null;
 
 //グローバルに置いておく
 let limits = [];
 let expenses = [];
 
 let incomes = [];
-let selectedIncomeCategoryId = null;
 let editingIncomeId = null;
+
+const defaultIncomeCategory = incomesCategories.find((C) => C.name === "給与");
+let selectedIncomeCategoryId = defaultIncomeCategory?.id ?? null;
 
 //保存用のキーは必ず統一"expenses"の部分
 const savedExpenses = localStorage.getItem("expenses");
@@ -584,10 +588,10 @@ function renderCategoryList(state) {
 
         //選択中のカテゴリを削除した場合は、表示を食費に戻す
         if (selectedCategoryId === category.id) {
-          const defaultCategory = expensesCategories.find(
+          const defaultExpenseCategory = expensesCategories.find(
             (c) => c.name === "食費",
           );
-          selectedCategoryId = defaultCategory?.id ?? null;
+          selectedCategoryId = defaultExpenseCategory?.id ?? null;
         }
 
         localStorage.setItem("categories", JSON.stringify(expensesCategories));
@@ -705,15 +709,23 @@ function toggleIncomeForm() {
 function renderIncomeData() {
   incomeDataListEl.innerHTML = "";
 
+  //selectedIncomeCategoryIdが存在するならそのカテゴリIDだけfilter⏩カテゴリ未選択状態ではデータを出さない安全設計
   const filtered = selectedIncomeCategoryId
     ? incomes.filter((i) => i.categoryId === selectedIncomeCategoryId)
     : [];
 
-  if (filtered.length === 0) {
+  //カテゴリが選択されていたら表示
+  if (selectedIncomeCategoryId) {
+    incomeDataListEl.classList.remove("hidden");
+  } else {
     incomeDataListEl.classList.add("hidden");
     return;
-  } else {
-    incomeDataListEl.classList.remove("hidden");
+  }
+
+  //データ0件ならメッセージ表示
+  if (filtered.length === 0) {
+    incomeDataListEl.innerHTML = "<p>まだ収入データがありません</p>";
+    return;
   }
 
   const grouped = groupByDate(filtered);
@@ -1451,4 +1463,5 @@ function renderRanking() {
 //初期表示のrender必須！
 render();
 renderIncomeList();
+toggleIncomeForm();
 renderIncomeData();
