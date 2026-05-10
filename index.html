@@ -34,14 +34,30 @@
         <ul id="category-list"></ul>
       </section>
 
-      <!-- 金額入力 -->
+      <!-- 支出入力欄 -->
+      <div class="input-card">
+        <p class="form-section-title">支出を追加しましょう</p>
+        <div id="expense-input-area">
+          <input id="memo-input" type="text" placeholder="内容" />
+          <input id="amount-input" type="number" placeholder="金額" />
+          <input type="date" id="date-input" />
+        </div>
+
+        <div>
+          <button id="amountBtn">追加</button>
+        </div>
+      </div>
+
+      <!-- 上限設定 -->
       <section id="expense-form" class="hidden">
+        <p class="form-section-title">今月の使用上限を設定しましょう</p>
         <div id="expense-limit-area">
-          <input id="expense-limit-input" type="number" />
+          <input id="expense-limit-input" type="number" placeholder="金額" />
           <button id="limitBtn">上限を設定</button>
           <ul id="limit-ul"></ul>
         </div>
 
+        <!-- 進捗 -->
         <div id="progress-area">
           <p id="day-progress"></p>
           <p id="usage-percent"></p>
@@ -62,20 +78,6 @@
 
         <!-- 固定費メッセージ -->
         <p id="fixed-message"></p>
-
-        <!-- 支出入力欄 -->
-        <div class="input-card">
-          <p class="form-section-title">支出を追加しましょう</p>
-          <div id="expense-input-area">
-            <input id="memo-input" type="text" placeholder="内容" />
-            <input id="amount-input" type="number" placeholder="金額" />
-            <input type="date" id="date-input" />
-          </div>
-
-          <div>
-            <button id="amountBtn">追加</button>
-          </div>
-        </div>
 
         <!-- 支出インラインモーダル -->
         <div id="edit-modal" class="modal modal-purple hidden">
@@ -99,7 +101,7 @@
           </div>
         </div>
 
-        <!-- 支出リスト描画欄 -->
+        <!-- 支出リスト -->
         <div id="amount-header">
           <span id="amount-title" class="marker">今月の支出リスト</span>
           <button id="list-toggle-btn">▼</button>
