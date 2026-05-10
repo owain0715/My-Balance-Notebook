@@ -183,17 +183,13 @@ const dd = String(now.getDate()).padStart(2, "0");
 dateInput.value = `${yyyy}-${mm}-${dd}`;
 incomeDateInput.value = `${yyyy}-${mm}-${dd}`;
 
-//支出リストの表示状態
-let isOpen = true;
+//支出/収入リストの表示状態
+let isExpenseOpen = true;
+let isIncomeOpen = true;
 
 //ページの初期状態
 showPage("expenses");
 buttons[0].classList.add("active");
-
-//アナリティクスページ・折れ線グラフ用
-const lineGraphData = createMonthlyLineData(expenses, incomes);
-
-const lineGraphLabels = Object.keys(lineGraphData).sort();
 
 //描画render
 function render() {
@@ -218,6 +214,7 @@ function renderAll(state, meta) {
 function renderExpenseSection(state, meta) {
   renderExpenseList(state);
   renderLimitInfo(state);
+
   renderProgress(state, meta);
   renderMonthlyReport(meta);
 }
@@ -975,11 +972,17 @@ function renderLimitInfo(state) {
   const li = document.createElement("li");
 
   if (state.existing) {
-    li.textContent = `今月の上限金額：¥${state.existing.amount.toLocaleString()}`;
-    limitBtn.textContent = "上限を変更"; // ←ここで判断
+    li.innerHTML = `
+  <span class="limit-label">今月の上限</span>
+
+  <span class="limit-value">
+    ¥${state.existing.amount.toLocaleString()}
+  </span>
+`;
+    limitBtn.textContent = "上限を変更";
   } else {
     li.textContent = "上限未設定";
-    limitBtn.textContent = "上限を設定"; // ←ここで戻す
+    limitBtn.textContent = "上限を設定";
   }
 
   limitUl.append(li);
@@ -1149,16 +1152,18 @@ function getCategoryMonthlyData(expense, categoryId, year, month) {
 
 //支出リストの表示状態管理
 expenseListToggleBtn.addEventListener("click", () => {
-  isOpen = !isOpen;
+  isExpenseOpen = !isExpenseOpen;
 
   amountList.classList.toggle("closed");
 
-  expenseListToggleBtn.textContent = isOpen ? "▼ 支出を隠す" : "▶ 支出を表示";
+  expenseListToggleBtn.textContent = isExpenseOpen
+    ? "▼ 支出を隠す"
+    : "▶ 支出を表示";
 });
 
 //収入リストの表示状態管理
 incomeListToggleBtn.addEventListener("click", () => {
-  let isIncomeOpen = true;
+  isIncomeOpen = !isIncomeOpen;
 
   incomeAmountList.classList.toggle("closed");
 
