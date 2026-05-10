@@ -147,7 +147,7 @@ const prevMonthBtn = document.getElementById("prev-month");
 const currentMonthEl = document.getElementById("current-month");
 const nextMonthBtn = document.getElementById("next-month");
 const dateInput = document.getElementById("date-input");
-const listToggleBtn = document.getElementById("list-toggle-btn");
+const expenseListToggleBtn = document.getElementById("list-toggle-btn");
 const typeSelect = document.getElementById("type-select");
 const buttons = document.querySelectorAll("#menu-buttons button");
 const pages = document.querySelectorAll(".page");
@@ -159,13 +159,14 @@ const incomeCategoryListEl = document.getElementById("income-category-list");
 const incomeAmountInput = document.getElementById("income-amount-input");
 const incomeDateInput = document.getElementById("income-date-input");
 const incomeAmountBtn = document.getElementById("income-amount-btn");
-const incomeDataListEl = document.getElementById("income-amount-list");
+const incomeAmountList = document.getElementById("income-amount-list");
 const incomeMemoInput = document.getElementById("income-memo-input");
 const incomeSaveBtn = document.getElementById("income-save-btn");
 const incomeCancelBtn = document.getElementById("income-cancel-btn");
 const incomeEditMemo = document.getElementById("income-edit-memo");
 const incomeEditAmount = document.getElementById("income-edit-amount");
 const incomeEditModal = document.getElementById("income-edit-modal");
+const incomeListToggleBtn = document.getElementById("income-list-toggle-btn");
 
 let editingExpenseId = null;
 
@@ -569,9 +570,7 @@ function renderCategoryList(state) {
       deleteBtn.classList.add("delete-btn");
 
       deleteBtn.addEventListener("click", (e) => {
-        //配列に再代入する
-        //deleteBtnをクリックしたときに、idが一致したものを除外し、それ以外を残す
-        //形を変えることで削除するイメージ
+        //親のイベントの伝播を止める
         e.stopPropagation();
 
         if (
@@ -633,9 +632,23 @@ function renderIncomeList() {
       deleteBtn.addEventListener("click", (e) => {
         e.stopPropagation();
 
+        if (
+          !confirm(
+            "このカテゴリを本当に削除しますか？一度削除すると復元できません。",
+          )
+        ) {
+          return;
+        }
         incomesCategories = incomesCategories.filter(
           (c) => c.id !== category.id,
         );
+
+        if (selectedIncomeCategoryId === category.id) {
+          const defaultIncomeCategory = incomesCategories.find(
+            (c) => c.name === "給与",
+          );
+          selectedIncomeCategoryId = defaultIncomeCategory?.id ?? null;
+        }
 
         localStorage.setItem(
           "incomesCategories",
@@ -697,7 +710,7 @@ incomeAmountBtn.addEventListener("click", () => {
   incomeDateInput.value = "";
 });
 
-//フォームの表示/非表示トグル
+//incomeフォームの表示/非表示トグル(初期状態は支出にするため)
 function toggleIncomeForm() {
   if (selectedIncomeCategoryId) {
     document.getElementById("income-form").classList.remove("hidden");
@@ -705,9 +718,10 @@ function toggleIncomeForm() {
     document.getElementById("income-form").classList.add("hidden");
   }
 }
+
 //収入描画
 function renderIncomeData() {
-  incomeDataListEl.innerHTML = "";
+  incomeAmountList.innerHTML = "";
 
   //selectedIncomeCategoryIdが存在するならそのカテゴリIDだけfilter⏩カテゴリ未選択状態ではデータを出さない安全設計
   const filtered = selectedIncomeCategoryId
@@ -716,15 +730,15 @@ function renderIncomeData() {
 
   //カテゴリが選択されていたら表示
   if (selectedIncomeCategoryId) {
-    incomeDataListEl.classList.remove("hidden");
+    incomeAmountList.classList.remove("hidden");
   } else {
-    incomeDataListEl.classList.add("hidden");
+    incomeAmountList.classList.add("hidden");
     return;
   }
 
   //データ0件ならメッセージ表示
   if (filtered.length === 0) {
-    incomeDataListEl.innerHTML = "<p>まだ収入データがありません</p>";
+    incomeAmountList.innerHTML = "<p>まだ収入データがありません</p>";
     return;
   }
 
@@ -784,7 +798,7 @@ function renderIncomeData() {
       card.append(dateEl);
       card.append(innerUl);
 
-      incomeDataListEl.append(card);
+      incomeAmountList.append(card);
     });
 }
 
@@ -1133,12 +1147,23 @@ function getCategoryMonthlyData(expense, categoryId, year, month) {
 }
 
 //支出リストの表示状態管理
-listToggleBtn.addEventListener("click", () => {
+expenseListToggleBtn.addEventListener("click", () => {
   isOpen = !isOpen;
 
   amountList.classList.toggle("closed");
 
-  listToggleBtn.textContent = isOpen ? "▼ 支出を隠す" : "▶ 支出を表示";
+  expenseListToggleBtn.textContent = isOpen ? "▼ 支出を隠す" : "▶ 支出を表示";
+});
+
+//収入リストの表示状態管理
+incomeListToggleBtn.addEventListener("click", () => {
+  let isIncomeOpen = true;
+
+  incomeAmountList.classList.toggle("closed");
+
+  incomeListToggleBtn.textContent = isIncomeOpen
+    ? "▼ 収入を隠す"
+    : "▶ 収入を表示";
 });
 
 //固定費コピー関数
