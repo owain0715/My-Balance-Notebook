@@ -282,6 +282,47 @@ button:hover {
   opacity: 1;
 }
 
+/* limit/forecastエリア */
+#limit-ul {
+  margin-top: 16px;
+  padding: 0;
+}
+
+#limit-ul li {
+  list-style: none;
+
+  padding: 18px 20px;
+
+  border-radius: 16px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(244, 238, 255, 0.92)
+  );
+
+  border: 2px solid rgba(175, 163, 212, 0.35);
+
+  box-shadow: 0 4px 12px rgba(175, 163, 212, 0.12);
+
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #5f5875;
+
+  letter-spacing: 0.03em;
+}
+
+.limit-label {
+  font-size: 13px;
+  color: #8f88a8;
+
+  letter-spacing: 0.04em;
+}
+
+.limit-value {
+  color: #7c6bc2;
+}
+
 /* 支出ページ */
 #expenses-page {
   flex: 1;
@@ -913,7 +954,6 @@ button:hover {
 }
 
 /* アナリティクスページ */
-
 #analytics-page {
   padding: 16px;
   display: flex;
