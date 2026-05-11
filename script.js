@@ -80,7 +80,7 @@ if (savedIncomeCategories) {
 const defaultExpenseCategory = expensesCategories.find(
   (c) => c.name === "食費",
 );
-let selectedCategoryId = defaultExpenseCategory?.id ?? null;
+let selectedExpenseCategoryId = defaultExpenseCategory?.id ?? null;
 
 //グローバルに置いておく
 let limits = [];
@@ -263,7 +263,7 @@ addBtn.addEventListener("click", () => {
 amountBtn.addEventListener("click", () => {
   const amount = Number(amountInput.value);
 
-  if (!selectedCategoryId) {
+  if (!selectedExpenseCategoryId) {
     alert("カテゴリを選択してください");
     return;
   }
@@ -272,7 +272,7 @@ amountBtn.addEventListener("click", () => {
 
   expenses.push({
     id: Date.now(),
-    categoryId: selectedCategoryId,
+    categoryId: selectedExpenseCategoryId,
     amount: amount,
     memo: memoInput.value.trim() || "(未入力)",
     date: dateInput.value || new Date().toISOString().slice(0, 10),
@@ -417,11 +417,11 @@ limitBtn.addEventListener("click", () => {
 
   if (limitInput.value === "") return;
   if (isNaN(limitEl)) return;
-  if (!selectedCategoryId) return;
+  if (!selectedExpenseCategoryId) return;
 
   const existing = limits.find(
     (l) =>
-      l.categoryId === selectedCategoryId &&
+      l.categoryId === selectedExpenseCategoryId &&
       l.year === currentYear &&
       l.month === currentMonth,
   );
@@ -431,7 +431,7 @@ limitBtn.addEventListener("click", () => {
   } else {
     //なかったらpush!
     limits.push({
-      categoryId: selectedCategoryId,
+      categoryId: selectedExpenseCategoryId,
       amount: limitEl,
       year: currentYear,
       month: currentMonth,
@@ -508,20 +508,20 @@ function resetProgressUI() {
 //ステータスまとめ関数
 function createViewState() {
   const selectedCategory = expensesCategories.find(
-    (c) => c.id === selectedCategoryId,
+    (c) => c.id === selectedExpenseCategoryId,
   );
 
   const monthly = filterByMonth(expenses, currentYear, currentMonth);
 
-  const filtered = selectedCategoryId
-    ? monthly.filter((e) => e.categoryId === selectedCategoryId)
+  const filtered = selectedExpenseCategoryId
+    ? monthly.filter((e) => e.categoryId === selectedExpenseCategoryId)
     : [];
 
   const sum = calcTotal(filtered);
 
   const existing = limits.find(
     (l) =>
-      l.categoryId === selectedCategoryId &&
+      l.categoryId === selectedExpenseCategoryId &&
       l.year === currentYear &&
       l.month === currentMonth,
   );
@@ -553,11 +553,11 @@ function renderCategoryList(state) {
 
     //カテゴリ選択状態・クリックしたら選択中にする
     li.addEventListener("click", () => {
-      selectedCategoryId = category.id;
+      selectedExpenseCategoryId = category.id;
       render();
     });
 
-    if (category.id === selectedCategoryId) {
+    if (category.id === selectedExpenseCategoryId) {
       li.classList.add("selected");
     }
 
@@ -584,11 +584,11 @@ function renderCategoryList(state) {
         );
 
         //選択中のカテゴリを削除した場合は、表示を食費に戻す
-        if (selectedCategoryId === category.id) {
+        if (selectedExpenseCategoryId === category.id) {
           const defaultExpenseCategory = expensesCategories.find(
             (c) => c.name === "食費",
           );
-          selectedCategoryId = defaultExpenseCategory?.id ?? null;
+          selectedExpenseCategoryId = defaultExpenseCategory?.id ?? null;
         }
 
         localStorage.setItem("categories", JSON.stringify(expensesCategories));
@@ -722,8 +722,11 @@ function renderIncomeData() {
   incomeAmountList.innerHTML = "";
 
   //selectedIncomeCategoryIdが存在するならそのカテゴリIDだけfilter⏩カテゴリ未選択状態ではデータを出さない安全設計
+
+  const monthly = filterByMonth(incomes, currentYear, currentMonth);
+
   const filtered = selectedIncomeCategoryId
-    ? incomes.filter((i) => i.categoryId === selectedIncomeCategoryId)
+    ? monthly.filter((i) => i.categoryId === selectedIncomeCategoryId)
     : [];
 
   //カテゴリが選択されていたら表示
@@ -784,6 +787,12 @@ function renderIncomeData() {
         deleteBtn.classList.add("icon-btn");
 
         deleteBtn.addEventListener("click", () => {
+          if (
+            !confirm("この収入を削除しますか？一度削除すると復元できません。")
+          ) {
+            return;
+          }
+
           incomes = incomes.filter((i) => i.id !== income.id);
           localStorage.setItem("incomesData", JSON.stringify(incomes));
           renderIncomeData();
@@ -904,6 +913,12 @@ function renderExpenseList(state) {
         deleteBtn.classList.add("icon-btn");
 
         deleteBtn.addEventListener("click", () => {
+          if (
+            !confirm("この支出を削除しますか？一度削除すると復元できません。")
+          ) {
+            return;
+          }
+
           //今見てる1つのexpenseのidと違うものだけを残すってこと！filterは消すというよりも残すものを選ぶに近い
           expenses = expenses.filter((e) => e.id !== expense.id);
           localStorage.setItem("expenses", JSON.stringify(expenses));
@@ -1206,7 +1221,7 @@ function autoAddRecurringExpenses() {
 }
 
 //サマリー計算
-function getCategorySummary() {
+function getExpenseCategorySummary() {
   const monthly = filterByMonth(expenses, currentYear, currentMonth);
 
   const summary = {};
