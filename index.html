@@ -198,13 +198,33 @@
       <div id="ranking" class="analytics-card"></div>
     </section>
 
-    <div id="settings-page" class="page hidden">設定ページ</div>
+    <!-- カレンダー -->
+    <section id="calendar-page" class="page hidden">
+      <div class="calendar-card">
+        <h3 class="section-title">カレンダー</h3>
+
+        <!-- アイコン部分 legend-->
+        <div id="calendar-legend">
+          <div class="legend-item expense">
+            <span class="legend-dot"></span>
+            <span>支出</span>
+          </div>
+
+          <div class="legend-item income">
+            <span class="legend-dot"></span>
+            <span>収入</span>
+          </div>
+        </div>
+
+        <div id="calendar"></div>
+      </div>
+    </section>
 
     <nav id="menu-buttons">
       <button data-page="expenses">支出管理💸</button>
       <button data-page="income">収入管理💵</button>
       <button data-page="analytics">分析💹</button>
-      <button data-page="settings">設定⚙️</button>
+      <button data-page="calendar">カレンダー🗓</button>
     </nav>
 
     <!-- DOMより後に実行する -->
