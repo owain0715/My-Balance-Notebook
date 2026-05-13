@@ -208,6 +208,7 @@ function renderAll(state, meta) {
   renderExpenseSection(state, meta);
   renderIncomeSection();
   renderAnalytics(meta);
+  renderCalendar();
 }
 
 //支出描画関数まとめ
@@ -1506,8 +1507,71 @@ function renderRanking() {
   `;
 }
 
+// カレンダー描画ゾーン
+const calendarEl = document.getElementById("calendar");
+
+function renderCalendar() {
+  calendarEl.innerHTML = "";
+
+  const weekDays = ["日", "月", "火", "水", "木", "金", "土"];
+  //今月の1日が何曜日か
+  const firstDay = new Date(currentYear, currentMonth - 1, 1).getDay();
+  //今月が何日まであるか
+  const lastDate = new Date(currentYear, currentMonth, 0).getDate();
+
+  const header = document.createElement("div");
+  header.classList.add("calendar-header");
+
+  weekDays.forEach((day) => {
+    const dayEl = document.createElement("div");
+    dayEl.textContent = day;
+    header.append(dayEl);
+  });
+
+  calendarEl.append(header);
+
+  const grid = document.createElement("div");
+  grid.classList.add("calendar-grid");
+
+  for (let i = 0; i < firstDay; i++) {
+    const emptyCell = document.createElement("div");
+    emptyCell.classList.add("calendar-cell");
+    grid.append(emptyCell);
+  }
+
+  for (let day = 1; day <= lastDate; day++) {
+    const cell = document.createElement("div");
+    cell.classList.add("calendar-cell");
+
+    const dateStr = `${currentYear}-${String(currentMonth).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+    const dailyExpenses = expenses.filter((e) => e.date === dateStr);
+
+    const dayEl = document.createElement("p");
+    dayEl.textContent = day;
+
+    cell.append(dayEl);
+
+    if (dailyExpenses.length > 0) {
+      const total = dailyExpenses.reduce(
+        (sum, expense) => sum + expense.amount,
+        0,
+      );
+
+      const totalEl = document.createElement("p");
+      totalEl.textContent = `¥${total.toLocaleString()}`;
+      totalEl.classList.add("calendar-total");
+
+      cell.append(totalEl);
+    }
+    grid.append(cell);
+  }
+  calendarEl.append(grid);
+}
+
 //初期表示のrender必須！
 render();
 renderIncomeList();
 toggleIncomeForm();
 renderIncomeData();
+renderCalendar();
