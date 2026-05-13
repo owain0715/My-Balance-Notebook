@@ -1114,3 +1114,73 @@ input,
 #income-input-area input::placeholder {
   font-size: 12px;
 }
+
+/* カレンダー */
+.calendar-header,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.calendar-header div {
+  text-align: center;
+  font-weight: bold;
+}
+
+.calendar-cell {
+  height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 4px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.calendar-cell p {
+  margin: 0;
+}
+
+.calendar-total {
+  font-size: 9px;
+  font-weight: bold;
+  color: rgb(202, 48, 48);
+
+  word-break: break-all;
+}
+
+.calendar-cell p:first-child {
+  color: #666;
+  font-size: 14px;
+}
+
+#calendar-legend {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 12px;
+  color: #666;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.expense .legend-dot {
+  background: rgb(202, 48, 48);
+}
+
+.income .legend-dot {
+  background: rgb(70, 120, 255);
+}
