@@ -1546,23 +1546,38 @@ function renderCalendar() {
     const dateStr = `${currentYear}-${String(currentMonth).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 
     const dailyExpenses = expenses.filter((e) => e.date === dateStr);
+    const dailyIncomes = incomes.filter((i) => i.date === dateStr);
 
     const dayEl = document.createElement("p");
     dayEl.textContent = day;
 
     cell.append(dayEl);
 
+    //支出
     if (dailyExpenses.length > 0) {
-      const total = dailyExpenses.reduce(
+      const expenseTotal = dailyExpenses.reduce(
         (sum, expense) => sum + expense.amount,
         0,
       );
+      const expenseTotalEl = document.createElement("p");
+      expenseTotalEl.textContent = `-${expenseTotal.toLocaleString()}`;
+      expenseTotalEl.classList.add("calendar-expense");
 
-      const totalEl = document.createElement("p");
-      totalEl.textContent = `¥${total.toLocaleString()}`;
-      totalEl.classList.add("calendar-total");
+      cell.append(expenseTotalEl);
+    }
 
-      cell.append(totalEl);
+    //収入
+    if (dailyIncomes.length > 0) {
+      const incomeTotal = dailyIncomes.reduce(
+        (sum, income) => sum + income.amount,
+        0,
+      );
+
+      const incomeTotalEl = document.createElement("p");
+      incomeTotalEl.textContent = `+${incomeTotal.toLocaleString()}`;
+      incomeTotalEl.classList.add("calendar-income");
+
+      cell.append(incomeTotalEl);
     }
     grid.append(cell);
   }
