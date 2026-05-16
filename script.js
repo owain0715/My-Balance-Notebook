@@ -1,5 +1,68 @@
 "use strict";
 
+//取得ゾーン
+const input = document.getElementById("expense-category-input");
+const addBtn = document.getElementById("addBtn");
+
+const categoryListUl = document.getElementById("category-list");
+categoryListUl.classList.add("closed");
+
+const form = document.getElementById("expense-form");
+
+const totalExpenseSumEl = document.getElementById("total-expense-sum");
+const expenseAmountInput = document.getElementById("amount-input");
+const amountBtn = document.getElementById("amountBtn");
+const amountHeader = document.getElementById("amount-header");
+const amountList = document.getElementById("amount-list");
+
+const expensesSumEl = document.getElementById("expense-sum");
+const limitInput = document.getElementById("expense-limit-input");
+const limitBtn = document.getElementById("limitBtn");
+const limitUl = document.getElementById("limit-ul");
+const progressEl = document.getElementById("progress");
+const alertEl = document.getElementById("alert");
+const dayProgress = document.getElementById("day-progress");
+const memoInput = document.getElementById("memo-input");
+const monthlyReport = document.getElementById("monthly-report");
+const editAmountInput = document.getElementById("edit-amount");
+const editMemoInput = document.getElementById("edit-memo");
+const saveBtn = document.getElementById("save-btn");
+const editModal = document.getElementById("edit-modal");
+const cancelBtn = document.getElementById("cancel-btn");
+const limitArea = document.getElementById("expense-limit-area");
+const progressArea = document.getElementById("progress-area");
+const fixedMessage = document.getElementById("fixed-message");
+const prevMonthBtn = document.getElementById("prev-month");
+const currentMonthEl = document.getElementById("current-month");
+const nextMonthBtn = document.getElementById("next-month");
+const dateInput = document.getElementById("date-input");
+const expenseListToggleBtn = document.getElementById("list-toggle-btn");
+const typeSelect = document.getElementById("type-select");
+const buttons = document.querySelectorAll("#menu-buttons button");
+const pages = document.querySelectorAll(".page");
+
+//incomeページの取得ゾーン
+const totalIncomeSumEl = document.getElementById("total-income-sum");
+const incomeInput = document.getElementById("income-input");
+const incomeAddBtn = document.getElementById("income-add-btn");
+
+const incomeAmountInput = document.getElementById("income-amount-input");
+const incomeDateInput = document.getElementById("income-date-input");
+const incomeAmountBtn = document.getElementById("income-amount-btn");
+
+const incomeAmountList = document.getElementById("income-amount-list");
+incomeAmountList.classList.add("closed");
+
+const incomeMemoInput = document.getElementById("income-memo-input");
+const incomeSaveBtn = document.getElementById("income-save-btn");
+const incomeCancelBtn = document.getElementById("income-cancel-btn");
+const incomeEditMemo = document.getElementById("income-edit-memo");
+const incomeEditAmount = document.getElementById("income-edit-amount");
+const incomeEditModal = document.getElementById("income-edit-modal");
+const incomeListToggleBtn = document.getElementById("income-list-toggle-btn");
+const incomesSumEl = document.getElementById("income-sum");
+const incomeAmountHeader = document.getElementById("income-header");
+
 //idがあると個体を識別できるため、必ず入れる
 let expensesCategories = [
   { id: 1, name: "食費", isDefault: true, isFixed: false },
@@ -69,10 +132,52 @@ if (savedIncomeCategories) {
   incomesCategories = JSON.parse(savedIncomeCategories);
 }
 
+//カテゴリの表示状態管理
+//支出側
+const expenseCategoryToggleBtn = document.getElementById(
+  "expense-category-toggle-btn",
+);
+
+let isExpenseCategoryOpen = false;
+
+expenseCategoryToggleBtn.addEventListener("click", () => {
+  isExpenseCategoryOpen = !isExpenseCategoryOpen;
+
+  categoryListUl.classList.toggle("closed");
+  expenseCategoryToggleBtn.textContent = "カテゴリを表示する";
+
+  expenseCategoryToggleBtn.textContent = isExpenseCategoryOpen
+    ? "支出カテゴリを非表示にする"
+    : "支出カテゴリを表示する";
+});
+
+//収入側
+const incomeCategoryToggleBtn = document.getElementById(
+  "income-category-toggle-btn",
+);
+
+const incomeCategoryListEl = document.getElementById("income-category-list");
+
+let isIncomeCategoryOpen = false;
+
+// 初期状態で閉じる
+incomeCategoryListEl.classList.add("hidden");
+
+incomeCategoryToggleBtn.addEventListener("click", () => {
+  isIncomeCategoryOpen = !isIncomeCategoryOpen;
+
+  incomeCategoryListEl.classList.toggle("hidden");
+
+  incomeCategoryToggleBtn.textContent = isIncomeCategoryOpen
+    ? "収入カテゴリを非表示にする"
+    : "収入カテゴリを表示する";
+});
+
 //初期カテゴリは食費に
 const defaultExpenseCategory = expensesCategories.find(
   (c) => c.name === "食費",
 );
+
 let selectedExpenseCategoryId = defaultExpenseCategory?.id ?? null;
 
 //グローバルに置いておく
@@ -82,7 +187,7 @@ let expenses = [];
 let incomes = [];
 let editingIncomeId = null;
 
-const defaultIncomeCategory = incomesCategories.find((C) => C.name === "給与");
+const defaultIncomeCategory = incomesCategories.find((c) => c.name === "給与");
 let selectedIncomeCategoryId = defaultIncomeCategory?.id ?? null;
 
 //保存用のキーは必ず統一"expenses"の部分
@@ -108,61 +213,6 @@ if (savedIncomes) {
 
 let chart;
 
-//取得ゾーン
-const input = document.getElementById("expense-category-input");
-const addBtn = document.getElementById("addBtn");
-const categoryListUl = document.getElementById("category-list");
-const form = document.getElementById("expense-form");
-
-const expenseAmountInput = document.getElementById("amount-input");
-const amountBtn = document.getElementById("amountBtn");
-const amountHeader = document.getElementById("amount-header");
-const amountList = document.getElementById("amount-list");
-
-const expensesSumEl = document.getElementById("expense-sum");
-const limitInput = document.getElementById("expense-limit-input");
-const limitBtn = document.getElementById("limitBtn");
-const limitUl = document.getElementById("limit-ul");
-const progressEl = document.getElementById("progress");
-const alertEl = document.getElementById("alert");
-const dayProgress = document.getElementById("day-progress");
-const memoInput = document.getElementById("memo-input");
-const monthlyReport = document.getElementById("monthly-report");
-const editAmountInput = document.getElementById("edit-amount");
-const editMemoInput = document.getElementById("edit-memo");
-const saveBtn = document.getElementById("save-btn");
-const editModal = document.getElementById("edit-modal");
-const cancelBtn = document.getElementById("cancel-btn");
-const limitArea = document.getElementById("expense-limit-area");
-const progressArea = document.getElementById("progress-area");
-const fixedMessage = document.getElementById("fixed-message");
-const prevMonthBtn = document.getElementById("prev-month");
-const currentMonthEl = document.getElementById("current-month");
-const nextMonthBtn = document.getElementById("next-month");
-const dateInput = document.getElementById("date-input");
-const expenseListToggleBtn = document.getElementById("list-toggle-btn");
-const typeSelect = document.getElementById("type-select");
-const buttons = document.querySelectorAll("#menu-buttons button");
-const pages = document.querySelectorAll(".page");
-
-//incomeページの取得ゾーン
-const incomeInput = document.getElementById("income-input");
-const incomeAddBtn = document.getElementById("income-add-btn");
-const incomeCategoryListEl = document.getElementById("income-category-list");
-const incomeAmountInput = document.getElementById("income-amount-input");
-const incomeDateInput = document.getElementById("income-date-input");
-const incomeAmountBtn = document.getElementById("income-amount-btn");
-const incomeAmountList = document.getElementById("income-amount-list");
-const incomeMemoInput = document.getElementById("income-memo-input");
-const incomeSaveBtn = document.getElementById("income-save-btn");
-const incomeCancelBtn = document.getElementById("income-cancel-btn");
-const incomeEditMemo = document.getElementById("income-edit-memo");
-const incomeEditAmount = document.getElementById("income-edit-amount");
-const incomeEditModal = document.getElementById("income-edit-modal");
-const incomeListToggleBtn = document.getElementById("income-list-toggle-btn");
-const incomesSumEl = document.getElementById("income-sum");
-const incomeAmountHeader = document.getElementById("income-header");
-
 let editingExpenseId = null;
 
 //日付管理
@@ -179,17 +229,12 @@ dateInput.value = `${yyyy}-${mm}-${dd}`;
 incomeDateInput.value = `${yyyy}-${mm}-${dd}`;
 
 //支出/収入リストの表示状態
-let isExpenseOpen = true;
-let isIncomeOpen = true;
+let isExpenseOpen = false;
+let isIncomeOpen = false;
 
 //ページの初期状態
 showPage("expenses");
 buttons[0].classList.add("active");
-
-// //固定費の場合は"今月の使用上限を設定しましょう"をhiddenにする
-// if (category === selectedCategory.isFixed) {
-//   formSectionTitle.classList.add("hidden");
-// }
 
 //描画render
 function render() {
@@ -205,9 +250,14 @@ function render() {
 //renderの全体まとめ
 function renderAll(state, meta) {
   renderCategoryList(state);
+
+  renderTotalExpense();
   renderExpenseSection(state, meta);
+
+  renderTotalIncome();
   renderIncomeSection();
-  renderAnalytics(meta);
+
+  renderAnalytics();
   renderCalendar();
 }
 
@@ -232,6 +282,48 @@ function renderAnalytics(meta) {
   renderPieChart();
   renderLineChart();
   renderRanking();
+}
+
+//総支出描画関数
+function renderTotalExpense() {
+  const monthly = filterByMonth(expenses, currentYear, currentMonth);
+
+  const total = calcTotal(monthly);
+
+  totalExpenseSumEl.innerHTML = `
+    <div>
+      <span class="marker">
+        今月の総支出
+      </span>
+
+      <br>
+
+      <span class="sum-amount marker">
+        ¥${total.toLocaleString()}
+      </span>
+    </div>
+  `;
+}
+
+//総収入描画関数
+function renderTotalIncome() {
+  const monthly = filterByMonth(incomes, currentYear, currentMonth);
+
+  const total = calcTotal(monthly);
+
+  totalIncomeSumEl.innerHTML = `
+    <div>
+      <span class="marker">
+        今月の総収入
+      </span>
+
+      <br>
+
+      <span class="sum-amount marker">
+        ¥${total.toLocaleString()}
+      </span>
+    </div>
+  `;
 }
 
 //支出カテゴリー追加イベント
@@ -1287,6 +1379,7 @@ function renderBalance() {
   if (balance >= 0) {
     balanceEl.classList.add("plus");
     balanceMessage.textContent = "今月も良いペースです！";
+    balanceMessage.classList.add("marker");
   } else {
     balanceEl.classList.add("minus");
     balanceMessage.textContent = "少し支出を見直してみましょう…！";
@@ -1627,7 +1720,7 @@ function renderCalendar() {
         0,
       );
       const expenseTotalEl = document.createElement("p");
-      expenseTotalEl.textContent = `-${expenseTotal.toLocaleString()}`;
+      expenseTotalEl.textContent = `¥${expenseTotal.toLocaleString()}`;
       expenseTotalEl.classList.add("calendar-expense");
 
       cell.append(expenseTotalEl);
@@ -1641,7 +1734,7 @@ function renderCalendar() {
       );
 
       const incomeTotalEl = document.createElement("p");
-      incomeTotalEl.textContent = `+${incomeTotal.toLocaleString()}`;
+      incomeTotalEl.textContent = `¥${incomeTotal.toLocaleString()}`;
       incomeTotalEl.classList.add("calendar-income");
 
       cell.append(incomeTotalEl);
