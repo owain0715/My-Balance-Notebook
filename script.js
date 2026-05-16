@@ -226,6 +226,7 @@ function renderIncomeSection() {
 
 //アナリティクス欄描画関数
 function renderAnalytics(meta) {
+  renderBalance();
   renderPieChart();
   renderLineChart();
   renderRanking();
@@ -1228,6 +1229,40 @@ function getExpenseCategorySummary() {
   });
 
   return summary;
+}
+
+//// アナリティクスページ⬇︎////
+
+//累積残高関数・残高計算
+function calcBalance() {
+  const incomeTotal = incomes.reduce((sum, income) => sum + income.amount, 0);
+
+  const expenseTotal = expenses.reduce(
+    (sum, expense) => sum + expense.amount,
+    0,
+  );
+
+  return incomeTotal - expenseTotal;
+}
+
+//累積残高描画
+function renderBalance() {
+  const balanceEl = document.getElementById("balance-el");
+  const balanceMessage = document.getElementById("balance-message");
+
+  const balance = calcBalance();
+
+  balanceEl.textContent = `${balance >= 0 ? "+" : "-"}¥${Math.abs(balance).toLocaleString()}`;
+
+  balanceEl.classList.remove("plus", "minus");
+
+  if (balance >= 0) {
+    balanceEl.classList.add("plus");
+    balanceMessage.textContent = "今月も良いペースです！";
+  } else {
+    balanceEl.classList.add("minus");
+    balanceMessage.textContent = "少し支出を見直してみましょう…！";
+  }
 }
 
 //円グラフ生成用データ
