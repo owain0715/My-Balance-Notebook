@@ -494,6 +494,37 @@ button:hover {
   right: 6px;
 }
 
+.monthly-diff {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.6;
+
+  text-align: center;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.monthly-diff-plus {
+  background: rgba(255, 120, 120, 0.12);
+  color: rgb(200, 60, 60);
+  border: 1px solid rgba(255, 120, 120, 0.25);
+}
+
+.monthly-diff-minus {
+  background: rgba(120, 220, 160, 0.15);
+  color: rgb(40, 140, 90);
+  border: 1px solid rgba(120, 220, 160, 0.3);
+}
+
+.diff-price {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
 /* プログレスエリア */
 #progress-area {
   border: 2px solid rgba(158, 140, 211, 0.3);
@@ -1029,10 +1060,7 @@ button:hover {
   flex-wrap: wrap;
 }
 
-/* =========================
-   背景を軽量化
-========================= */
-
+/* 背景を軽量化 */
 .card,
 .analytics-card,
 #amount-list,
@@ -1057,10 +1085,7 @@ input,
   box-shadow: none;
 }
 
-/* =========================
-   progress軽量化
-========================= */
-
+/* progress軽量化 */
 #progress-bar {
   box-shadow: none;
   background: #ececec;
@@ -1219,4 +1244,9 @@ input,
 
 .income .legend-dot {
   background: rgb(70, 120, 255);
+}
+
+.today {
+  border: 2px solid #afa3d4;
+  background: rgba(175, 163, 212, 0.15);
 }
