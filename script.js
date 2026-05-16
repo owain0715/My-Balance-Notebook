@@ -51,7 +51,6 @@ const incomeDateInput = document.getElementById("income-date-input");
 const incomeAmountBtn = document.getElementById("income-amount-btn");
 
 const incomeAmountList = document.getElementById("income-amount-list");
-incomeAmountList.classList.add("closed");
 
 const incomeMemoInput = document.getElementById("income-memo-input");
 const incomeSaveBtn = document.getElementById("income-save-btn");
@@ -943,6 +942,13 @@ function renderIncomeData() {
 
       incomeAmountList.append(card);
     });
+
+  //render がDOM状態を作り直すたびに、「現在の開閉状態」を再適用し直す必要がある
+  incomeAmountList.classList.toggle("closed", !isIncomeOpen);
+
+  incomeListToggleBtn.textContent = isIncomeOpen
+    ? "▼ 収入を隠す"
+    : "▶ 収入を表示";
 }
 
 //メタ定義/今の画面に必要な状況データまとめ
@@ -1125,6 +1131,14 @@ function renderExpenseList(state) {
     diffEl.classList.add("monthly-diff");
     amountList.append(diffEl);
   }
+
+  // ユーザーの開閉状態を維持
+  //render がDOM状態を作り直すたびに、「現在の開閉状態」を再適用し直す必要がある
+  amountList.classList.toggle("closed", !isExpenseOpen);
+
+  expenseListToggleBtn.textContent = isExpenseOpen
+    ? "▼ 支出を隠す"
+    : "▶ 支出を表示";
 }
 
 //限度額表示
