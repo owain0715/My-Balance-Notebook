@@ -916,6 +916,29 @@ button:hover {
   margin-top: 12px;
 }
 
+#income-sum {
+  font-size: 16px;
+  font-weight: bold;
+  color: #777;
+
+  letter-spacing: 0.5px;
+
+  margin: 4px 0 12px;
+  padding: 0;
+
+  background: none;
+
+  border-radius: 8px;
+
+  display: block;
+  text-align: right;
+}
+
+.sum-amount {
+  font-size: 20px;
+  font-weight: 700;
+}
+
 /* 円グラフ */
 #pie-chart {
   width: 100%;
