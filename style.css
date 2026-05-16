@@ -1045,6 +1045,26 @@ button:hover {
   color: #e53935;
 }
 
+/* 累積残高部分 */
+.balance-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 12px 0;
+}
+
+.plus {
+  color: #4caf50;
+}
+
+.minus {
+  color: #e53935;
+}
+
+.balance-message {
+  font-size: 0.9rem;
+  color: #666;
+}
+
 /* ランキング部分 */
 #ranking h3 {
   margin-bottom: 8px;
