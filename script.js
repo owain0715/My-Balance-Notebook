@@ -160,6 +160,8 @@ const incomeEditMemo = document.getElementById("income-edit-memo");
 const incomeEditAmount = document.getElementById("income-edit-amount");
 const incomeEditModal = document.getElementById("income-edit-modal");
 const incomeListToggleBtn = document.getElementById("income-list-toggle-btn");
+const incomesSumEl = document.getElementById("income-sum");
+const incomeAmountHeader = document.getElementById("income-header");
 
 let editingExpenseId = null;
 
@@ -737,13 +739,26 @@ function toggleIncomeForm() {
 function renderIncomeData() {
   incomeAmountList.innerHTML = "";
 
-  //selectedIncomeCategoryIdが存在するならそのカテゴリIDだけfilter⏩カテゴリ未選択状態ではデータを出さない安全設計
-
   const monthly = filterByMonth(incomes, currentYear, currentMonth);
 
   const filtered = selectedIncomeCategoryId
     ? monthly.filter((i) => i.categoryId === selectedIncomeCategoryId)
     : [];
+
+  const sum = calcTotal(filtered);
+
+  const hasData = filtered.length > 0;
+
+  if (!hasData) {
+    incomeAmountHeader.classList.add("hidden");
+    incomeAmountList.classList.add("hidden");
+    incomesSumEl.classList.add("hidden");
+    return;
+  } else {
+    incomeAmountHeader.classList.remove("hidden");
+    incomeAmountList.classList.remove("hidden");
+    incomesSumEl.classList.remove("hidden");
+  }
 
   //カテゴリが選択されていたら表示
   if (selectedIncomeCategoryId) {
@@ -758,6 +773,22 @@ function renderIncomeData() {
     incomeAmountList.innerHTML = "<p>まだ収入データがありません</p>";
     return;
   }
+
+  const selectedIncomeCategory = incomesCategories.find(
+    (c) => c.id === selectedIncomeCategoryId,
+  );
+
+  incomesSumEl.innerHTML = `
+<div>
+  <span class="marker">
+    今月の${selectedIncomeCategory?.name}合計
+  </span>
+  <br>
+
+  <span class="sum-amount marker">
+    ¥${sum.toLocaleString()}
+  </span>
+</div>`;
 
   const grouped = groupByDate(filtered);
 
