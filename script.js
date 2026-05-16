@@ -2,59 +2,52 @@
 
 //idがあると個体を識別できるため、必ず入れる
 let expensesCategories = [
-  { id: 1, name: "食費", isDefault: true, isFixed: false, isRecurring: false },
+  { id: 1, name: "食費", isDefault: true, isFixed: false },
   {
     id: 2,
     name: "水道光熱費",
     isDefault: true,
     isFixed: false,
-    isRecurring: false,
   },
   {
     id: 3,
     name: "交通費",
     isDefault: true,
     isFixed: false,
-    isRecurring: false,
   },
   {
     id: 4,
     name: "交際費",
     isDefault: true,
     isFixed: false,
-    isRecurring: false,
   },
-  { id: 5, name: "住居費", isDefault: true, isFixed: true, isRecurring: false },
+  { id: 5, name: "住居費", isDefault: true, isFixed: true },
   {
     id: 6,
     name: "サブスク",
     isDefault: true,
     isFixed: true,
-    isRecurring: false,
   },
-  { id: 7, name: "保険料", isDefault: true, isFixed: true, isRecurring: false },
+  { id: 7, name: "保険料", isDefault: true, isFixed: true },
   {
     id: 8,
     name: "通信費",
     isDefault: true,
     isFixed: false,
-    isRecurring: false,
   },
   {
     id: 9,
     name: "日用品費",
     isDefault: true,
     isFixed: false,
-    isRecurring: false,
   },
   {
     id: 10,
     name: "美容費",
     isDefault: true,
     isFixed: false,
-    isRecurring: false,
   },
-  { id: 11, name: "趣味", isDefault: true, isFixed: false, isRecurring: false },
+  { id: 11, name: "趣味", isDefault: true, isFixed: false },
 ];
 
 let incomesCategories = [
@@ -121,7 +114,7 @@ const addBtn = document.getElementById("addBtn");
 const categoryListUl = document.getElementById("category-list");
 const form = document.getElementById("expense-form");
 
-const amountInput = document.getElementById("amount-input");
+const expenseAmountInput = document.getElementById("amount-input");
 const amountBtn = document.getElementById("amountBtn");
 const amountHeader = document.getElementById("amount-header");
 const amountList = document.getElementById("amount-list");
@@ -191,6 +184,11 @@ let isIncomeOpen = true;
 showPage("expenses");
 buttons[0].classList.add("active");
 
+// //固定費の場合は"今月の使用上限を設定しましょう"をhiddenにする
+// if (category === selectedCategory.isFixed) {
+//   formSectionTitle.classList.add("hidden");
+// }
+
 //描画render
 function render() {
   const state = createViewState();
@@ -238,8 +236,6 @@ addBtn.addEventListener("click", () => {
   const text = input.value.trim();
   const isFixed = typeSelect.value === "fixed";
 
-  const isRecurring = isFixed ? confirm("この固定費は毎月同額ですか？") : false;
-
   //空白・同じ名前ならreturn
   if (text === "") return;
   if (expensesCategories.some((c) => c.name === text)) return;
@@ -249,7 +245,6 @@ addBtn.addEventListener("click", () => {
     name: text,
     isDefault: false,
     isFixed: isFixed,
-    isRecurring: isFixed ? isRecurring : false,
   });
 
   //追加したときに保存
@@ -261,8 +256,11 @@ addBtn.addEventListener("click", () => {
 });
 
 //支出追加ボタンイベント
-amountBtn.addEventListener("click", () => {
-  const amount = Number(amountInput.value);
+amountBtn.addEventListener("click", handleAddExpense);
+
+//Enter対応
+function handleAddExpense() {
+  const amount = Number(expenseAmountInput.value);
 
   if (!selectedExpenseCategoryId) {
     alert("カテゴリを選択してください");
@@ -285,12 +283,20 @@ amountBtn.addEventListener("click", () => {
   render();
 
   memoInput.value = "";
-  amountInput.value = "";
+  expenseAmountInput.value = "";
 
   //入力後はメモ欄にフォーカス、日付も今日に戻す（ユーザー体験の向上）
   //結局消した（スマホ使用想定で、memoInputにフォーカスされてしまうと入力欄が邪魔をして、新規追加された支出が見えにくくなるため）
   // memoInput.focus();
   dateInput.value = new Date().toISOString().slice(0, 10);
+}
+
+[memoInput, expenseAmountInput].forEach((input) => {
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      handleAddExpense();
+    }
+  });
 });
 
 //先月に戻るボタン
@@ -684,12 +690,14 @@ incomeAddBtn.addEventListener("click", () => {
 });
 
 //収入追加ボタンイベント
-incomeAmountBtn.addEventListener("click", () => {
-  const memo = incomeMemoInput.value;
+incomeAmountBtn.addEventListener("click", handleAddIncome);
+
+function handleAddIncome() {
+  const memo = incomeMemoInput.value.trim();
   const amount = Number(incomeAmountInput.value);
 
   if (!selectedIncomeCategoryId) return;
-  if (incomeMemoInput.value === "") return;
+  if (incomeMemoInput.value.trim() === "") return;
   if (!amount || amount <= 0) return;
 
   incomes.push({
@@ -707,6 +715,12 @@ incomeAmountBtn.addEventListener("click", () => {
   incomeMemoInput.value = "";
   incomeAmountInput.value = "";
   incomeDateInput.value = "";
+}
+
+incomeAmountInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    handleAddIncome();
+  }
 });
 
 //incomeフォームの表示/非表示トグル(初期状態は支出にするため)
@@ -766,7 +780,7 @@ function renderIncomeData() {
         nameEl.textContent = income.memo;
 
         const amountEl = document.createElement("span");
-        amountEl.textContent = `¥${income.amount}`;
+        amountEl.textContent = `¥${income.amount.toLocaleString()}`;
         amountEl.classList.add("amount");
 
         li.append(nameEl);
@@ -965,10 +979,22 @@ function renderExpenseList(state) {
       //変動費のみ以下表示
     } else if (!state.selectedCategory.isFixed) {
       if (diff > 0) {
-        diffEl.textContent = `先月より ¥${Math.abs(diff).toLocaleString()}使い過ぎています😖`;
+        diffEl.innerHTML = `
+  先月より<br>
+  <span class="diff-price">
+    ¥${Math.abs(diff).toLocaleString()}
+  </span><br>
+  使い過ぎています😖
+`;
         diffEl.classList.add("monthly-diff-plus");
       } else if (diff < 0) {
-        diffEl.textContent = `先月より ¥${Math.abs(diff).toLocaleString()}節約できています✨`;
+        diffEl.innerHTML = `
+  先月より<br>
+  <span class="diff-price">
+    ¥${Math.abs(diff).toLocaleString()}
+  </span><br>
+  節約できています✨
+`;
         diffEl.classList.add("monthly-diff-minus");
       } else {
         diffEl.textContent = `先月と同じペースです`;
@@ -1122,9 +1148,9 @@ function renderMonthlyReport(meta) {
   let message = "";
 
   if (expenseDiff > 0) {
-    message = "先月より支出が増えています…！";
+    message = "先月より支出が増えています💦";
   } else if (expenseDiff < 0) {
-    message = "先月よりも節約できています！";
+    message = "先月よりも節約できています✨";
   } else {
     message = "先月と同じペースです";
   }
@@ -1187,39 +1213,6 @@ incomeListToggleBtn.addEventListener("click", () => {
     ? "▼ 収入を隠す"
     : "▶ 収入を表示";
 });
-
-//固定費コピー関数
-function autoAddRecurringExpenses() {
-  const thisMonthStr = `${currentYear}-${String(currentMonth).padStart(2, "0")}`;
-
-  expensesCategories
-    .filter((c) => c.isFixed && c.isRecurring)
-    .forEach((category) => {
-      //今月データチェック
-      const exists = expenses.some(
-        (e) => e.categoryId === category.id && e.date.startsWith(thisMonthStr),
-      );
-
-      if (exists) return;
-
-      //前月データチェック
-      const lastMonthData = expenses
-        .filter((e) => e.categoryId === category.id)
-        .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
-
-      if (!lastMonthData) return;
-
-      //コピー
-      expenses.push({
-        id: Date.now(),
-        categoryId: category.id,
-        amount: lastMonthData.amount,
-        memo: `${lastMonthData.memo.replace(/（毎月固定）/g, "")}（毎月固定）`,
-        date: `${thisMonthStr}-01`,
-      });
-    });
-  localStorage.setItem("expenses", JSON.stringify(expenses));
-}
 
 //サマリー計算
 function getExpenseCategorySummary() {
@@ -1513,6 +1506,8 @@ const calendarEl = document.getElementById("calendar");
 function renderCalendar() {
   calendarEl.innerHTML = "";
 
+  const today = new Date();
+
   const weekDays = ["日", "月", "火", "水", "木", "金", "土"];
   //今月の1日が何曜日か
   const firstDay = new Date(currentYear, currentMonth - 1, 1).getDay();
@@ -1542,6 +1537,15 @@ function renderCalendar() {
   for (let day = 1; day <= lastDate; day++) {
     const cell = document.createElement("div");
     cell.classList.add("calendar-cell");
+
+    // today判定
+    if (
+      currentYear === today.getFullYear() &&
+      currentMonth === today.getMonth() + 1 &&
+      day === today.getDate()
+    ) {
+      cell.classList.add("today");
+    }
 
     const dateStr = `${currentYear}-${String(currentMonth).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 
