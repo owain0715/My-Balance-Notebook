@@ -309,7 +309,6 @@ prevMonthBtn.addEventListener("click", () => {
     currentMonth = 12;
     currentYear--;
   }
-  autoAddRecurringExpenses();
   render();
 });
 
@@ -320,8 +319,6 @@ nextMonthBtn.addEventListener("click", () => {
     currentMonth = 1;
     currentYear++;
   }
-
-  autoAddRecurringExpenses();
   render();
 });
 
