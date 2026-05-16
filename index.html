@@ -16,8 +16,16 @@
     </nav>
 
     <div id="expenses-page" class="page">
-      <!-- カテゴリページ -->
+      <div id="total-expense-sum"></div>
+
+      <!-- 支出カテゴリページ -->
       <section id="category-area">
+        <div class="section-header">
+          <button id="expense-category-toggle-btn" class="toggle-btn">
+            支出カテゴリを表示する
+          </button>
+        </div>
+
         <div id="category-input-area">
           <input
             id="expense-category-input"
@@ -33,20 +41,6 @@
 
         <ul id="category-list"></ul>
       </section>
-
-      <!-- 支出入力欄 -->
-      <div class="input-card">
-        <p class="form-section-title">支出を追加しましょう</p>
-        <div id="expense-input-area">
-          <input id="memo-input" type="text" placeholder="内容" />
-          <input id="amount-input" type="number" placeholder="金額" />
-          <input type="date" id="date-input" />
-        </div>
-
-        <div>
-          <button id="amountBtn">追加</button>
-        </div>
-      </div>
 
       <!-- 上限設定 -->
       <section id="expense-form" class="hidden">
@@ -73,6 +67,20 @@
             <span>50%</span>
             <span>75%</span>
             <span>100%</span>
+          </div>
+        </div>
+
+        <!-- 支出入力欄 -->
+        <div class="input-card">
+          <p class="form-section-title">支出を追加しましょう</p>
+          <div id="expense-input-area">
+            <input id="memo-input" type="text" placeholder="内容" />
+            <input id="amount-input" type="number" placeholder="金額" />
+            <input type="date" id="date-input" />
+          </div>
+
+          <div>
+            <button id="amountBtn">追加</button>
           </div>
         </div>
 
@@ -114,13 +122,17 @@
 
     <!-- incomeエリア -->
     <div id="income-page" class="page hidden">
+      <div id="total-income-sum"></div>
       <!-- 収入カテゴリ入力 -->
       <div id="income-category-area">
+        <button id="income-category-toggle-btn" class="toggle-btn">
+          収入カテゴリを表示する
+        </button>
         <div id="income-category-input-area">
           <input id="income-input" type="text" placeholder="収入カテゴリ" />
           <button id="income-add-btn">追加</button>
         </div>
-        <ul id="income-category-list"></ul>
+        <ul id="income-category-list" class="hidden"></ul>
       </div>
 
       <!-- 金額入力 -->
@@ -157,7 +169,7 @@
 
         <div id="income-header">
           <span id="income-amount-title" class="marker">今月の収入リスト</span>
-          <button id="income-list-toggle-btn">▼</button>
+          <button id="income-list-toggle-btn">▶ 収入を表示</button>
         </div>
 
         <ul id="income-amount-list"></ul>
