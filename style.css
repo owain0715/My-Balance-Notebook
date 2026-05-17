@@ -607,6 +607,14 @@ button:hover {
   padding: 10px;
 }
 
+.section-guide {
+  font-size: 0.85rem;
+  color: #8e88a5;
+
+  margin-top: 4px;
+  margin-bottom: 14px;
+}
+
 #progress-bar {
   margin-top: 10px;
   height: 18px;
@@ -669,9 +677,19 @@ button:hover {
   line-height: 1.4;
 }
 
+#day-progress,
+#usage-percent {
+  font-size: 14px;
+  color: #6f6a7d;
+  font-weight: 600;
+}
+
+#day-progress {
+  margin-top: 4px;
+}
+
 #usage-percent {
   margin-bottom: 10px;
-  font-weight: 600;
 }
 
 #alert {
@@ -696,11 +714,6 @@ button:hover {
 
 .normal {
   color: #888;
-}
-
-#day-progress {
-  margin-top: 4px;
-  font-weight: 600;
 }
 
 .forecast-card {
@@ -1231,10 +1244,7 @@ input,
 #amount-list,
 #income-amount-list,
 #expenses-page {
-  contain: content;
-
   -webkit-overflow-scrolling: touch;
-
   overscroll-behavior: contain;
 }
 
