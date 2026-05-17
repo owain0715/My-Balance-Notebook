@@ -5,8 +5,6 @@ const input = document.getElementById("expense-category-input");
 const addBtn = document.getElementById("addBtn");
 
 const categoryListUl = document.getElementById("category-list");
-categoryListUl.classList.add("closed");
-
 const form = document.getElementById("expense-form");
 
 const totalExpenseSumEl = document.getElementById("total-expense-sum");
@@ -35,7 +33,7 @@ const fixedMessage = document.getElementById("fixed-message");
 const prevMonthBtn = document.getElementById("prev-month");
 const currentMonthEl = document.getElementById("current-month");
 const nextMonthBtn = document.getElementById("next-month");
-const dateInput = document.getElementById("date-input");
+const expenseDateInput = document.getElementById("date-input");
 const expenseListToggleBtn = document.getElementById("list-toggle-btn");
 const typeSelect = document.getElementById("type-select");
 const buttons = document.querySelectorAll("#menu-buttons button");
@@ -137,13 +135,12 @@ const expenseCategoryToggleBtn = document.getElementById(
   "expense-category-toggle-btn",
 );
 
-let isExpenseCategoryOpen = false;
+let isExpenseCategoryOpen = true;
 
 expenseCategoryToggleBtn.addEventListener("click", () => {
   isExpenseCategoryOpen = !isExpenseCategoryOpen;
 
   categoryListUl.classList.toggle("closed");
-  expenseCategoryToggleBtn.textContent = "カテゴリを表示する";
 
   expenseCategoryToggleBtn.textContent = isExpenseCategoryOpen
     ? "支出カテゴリを非表示にする"
@@ -157,10 +154,10 @@ const incomeCategoryToggleBtn = document.getElementById(
 
 const incomeCategoryListEl = document.getElementById("income-category-list");
 
-let isIncomeCategoryOpen = false;
+let isIncomeCategoryOpen = true;
 
-// 初期状態で閉じる
-incomeCategoryListEl.classList.add("hidden");
+//初期状態
+incomeCategoryListEl.classList.remove("hidden");
 
 incomeCategoryToggleBtn.addEventListener("click", () => {
   isIncomeCategoryOpen = !isIncomeCategoryOpen;
@@ -218,14 +215,45 @@ let editingExpenseId = null;
 let currentYear = new Date().getFullYear();
 let currentMonth = new Date().getMonth() + 1;
 
-//日付の初期設定は今日にしておく
+//日付の初期設定は今日にしておく(初回ロード時)
 const now = new Date();
 const yyyy = now.getFullYear();
 const mm = String(now.getMonth() + 1).padStart(2, "0");
 const dd = String(now.getDate()).padStart(2, "0");
 
-dateInput.value = `${yyyy}-${mm}-${dd}`;
+expenseDateInput.value = `${yyyy}-${mm}-${dd}`;
 incomeDateInput.value = `${yyyy}-${mm}-${dd}`;
+
+//monthnavとinputdateの連動関数
+function syncDateInputToCurrentMonth() {
+  const yyyy = currentYear;
+  const mm = String(currentMonth).padStart(2, "0");
+
+  expenseDateInput.value = `${yyyy}-${mm}-01`;
+  incomeDateInput.value = `${yyyy}-${mm}-01`;
+}
+
+//
+function resetDateInput() {
+  const now = new Date();
+
+  const isCurrentMonth =
+    currentYear === now.getFullYear() && currentMonth === now.getMonth() + 1;
+
+  //今月なら今日に
+  if (isCurrentMonth) {
+    expenseDateInput.value = now.toISOString().slice(0, 10);
+    incomeDateInput.value = now.toISOString().slice(0, 10);
+
+    //今月以外なら表示月の1日に設定
+  } else {
+    const yyyy = currentYear;
+    const mm = String(currentMonth).padStart(2, "0");
+
+    expenseDateInput.value = `${yyyy}-${mm}-01`;
+    incomeDateInput.value = `${yyyy}-${mm}-01`;
+  }
+}
 
 //支出/収入リストの表示状態
 let isExpenseOpen = false;
@@ -291,10 +319,9 @@ function renderTotalExpense() {
 
   totalExpenseSumEl.innerHTML = `
     <div>
-      <span class="marker">
+      <span>
         今月の総支出
       </span>
-
       <br>
 
       <span class="sum-amount marker">
@@ -312,7 +339,7 @@ function renderTotalIncome() {
 
   totalIncomeSumEl.innerHTML = `
     <div>
-      <span class="marker">
+      <span>
         今月の総収入
       </span>
 
@@ -368,7 +395,7 @@ function handleAddExpense() {
     categoryId: selectedExpenseCategoryId,
     amount: amount,
     memo: memoInput.value.trim() || "(未入力)",
-    date: dateInput.value || new Date().toISOString().slice(0, 10),
+    date: expenseDateInput.value || new Date().toISOString().slice(0, 10),
   });
 
   //保存用のキーは必ず統一"expenses"の部分
@@ -382,7 +409,7 @@ function handleAddExpense() {
   //入力後はメモ欄にフォーカス、日付も今日に戻す（ユーザー体験の向上）
   //結局消した（スマホ使用想定で、memoInputにフォーカスされてしまうと入力欄が邪魔をして、新規追加された支出が見えにくくなるため）
   // memoInput.focus();
-  dateInput.value = new Date().toISOString().slice(0, 10);
+  resetDateInput();
 }
 
 [memoInput, expenseAmountInput].forEach((input) => {
@@ -396,10 +423,14 @@ function handleAddExpense() {
 //先月に戻るボタン
 prevMonthBtn.addEventListener("click", () => {
   currentMonth--;
+
   if (currentMonth === 0) {
     currentMonth = 12;
     currentYear--;
   }
+
+  syncDateInputToCurrentMonth();
+
   render();
 });
 
@@ -410,6 +441,9 @@ nextMonthBtn.addEventListener("click", () => {
     currentMonth = 1;
     currentYear++;
   }
+
+  syncDateInputToCurrentMonth();
+
   render();
 });
 
@@ -805,7 +839,7 @@ function handleAddIncome() {
 
   incomeMemoInput.value = "";
   incomeAmountInput.value = "";
-  incomeDateInput.value = "";
+  resetDateInput();
 }
 
 incomeAmountInput.addEventListener("keydown", (e) => {
@@ -955,19 +989,32 @@ function renderIncomeData() {
 function createMeta() {
   const now = new Date();
 
-  const isCurrentMonth =
-    now.getFullYear() === currentYear && now.getMonth() + 1 === currentMonth;
+  const currentYM = currentYear * 100 + currentMonth;
+  const nowYM = now.getFullYear() * 100 + (now.getMonth() + 1);
 
   const dayInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
-  //今月であるかどうかの条件分岐
-  const today = isCurrentMonth ? now.getDate() : dayInMonth;
+  let today;
+
+  // 今月
+  if (currentYM === nowYM) {
+    today = now.getDate();
+
+    // 過去月
+  } else if (currentYM < nowYM) {
+    today = dayInMonth;
+
+    // 未来月
+  } else {
+    today = 0;
+  }
 
   const { thisMonthTotal, lastMonthTotal } = getMonthlyData(
     expenses,
     currentYear,
     currentMonth,
   );
+
   const expenseDiff = thisMonthTotal - lastMonthTotal;
 
   return {
@@ -978,7 +1025,6 @@ function createMeta() {
     expenseDiff,
   };
 }
-
 //支出リスト描画
 function renderExpenseList(state) {
   //支出追加ボタン・categories.forEachの外に出す
@@ -1214,6 +1260,10 @@ function renderProgress(state, meta) {
 
     const forecastEl = document.createElement("li");
 
+    const forecastArea = document.getElementById("forecast-area");
+    forecastArea.innerHTML = "";
+    forecastArea.append(forecastEl);
+
     forecastEl.innerHTML = `
   <p class="forecast-label">このペースだと…</p>
   <p class="forecast-amount">
@@ -1221,7 +1271,7 @@ function renderProgress(state, meta) {
   </p>
 `;
     forecastEl.classList.add("forecast-card");
-    limitUl.append(forecastEl);
+    forecastArea.append(forecastEl);
   }
 
   if (state.selectedCategory?.isFixed) {
@@ -1392,11 +1442,11 @@ function renderBalance() {
 
   if (balance >= 0) {
     balanceEl.classList.add("plus");
-    balanceMessage.textContent = "今月も良いペースです！";
+    balanceMessage.textContent = "順調に貯蓄ペースを保てています";
     balanceMessage.classList.add("marker");
   } else {
     balanceEl.classList.add("minus");
-    balanceMessage.textContent = "少し支出を見直してみましょう…！";
+    balanceMessage.textContent = "少し支出を見直してみましょう";
   }
 }
 
