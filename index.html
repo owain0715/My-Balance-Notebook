@@ -22,7 +22,7 @@
       <section id="category-area">
         <div class="section-header">
           <button id="expense-category-toggle-btn" class="toggle-btn">
-            支出カテゴリを表示する
+            支出カテゴリを非表示にする
           </button>
         </div>
 
@@ -51,25 +51,6 @@
           <ul id="limit-ul"></ul>
         </div>
 
-        <!-- 進捗 -->
-        <div id="progress-area">
-          <p id="day-progress"></p>
-          <p id="usage-percent"></p>
-          <p id="alert"></p>
-
-          <div id="progress-bar">
-            <div id="progress"></div>
-          </div>
-
-          <div id="scale">
-            <span>0%</span>
-            <span>25%</span>
-            <span>50%</span>
-            <span>75%</span>
-            <span>100%</span>
-          </div>
-        </div>
-
         <!-- 支出入力欄 -->
         <div class="input-card">
           <p class="form-section-title">支出を追加しましょう</p>
@@ -81,6 +62,35 @@
 
           <div>
             <button id="amountBtn">追加</button>
+          </div>
+
+          <!-- 進捗 -->
+          <div id="progress-area">
+            <p class="section-guide">
+              今月の使用ペースをチェックしましょう💡<br />
+              上限に対して使いすぎていないか確認できます
+            </p>
+
+            <p id="alert"></p>
+
+            <div class="progress-detail">
+              <p id="day-progress"></p>
+              <p id="usage-percent"></p>
+            </div>
+
+            <div id="progress-bar">
+              <div id="progress"></div>
+            </div>
+
+            <div id="scale">
+              <span>0%</span>
+              <span>25%</span>
+              <span>50%</span>
+              <span>75%</span>
+              <span>100%</span>
+            </div>
+
+            <div id="forecast-area"></div>
           </div>
         </div>
 
@@ -126,7 +136,7 @@
       <!-- 収入カテゴリ入力 -->
       <div id="income-category-area">
         <button id="income-category-toggle-btn" class="toggle-btn">
-          収入カテゴリを表示する
+          収入カテゴリを非表示にする
         </button>
         <div id="income-category-input-area">
           <input id="income-input" type="text" placeholder="収入カテゴリ" />
@@ -180,7 +190,7 @@
     <section id="analytics-page" class="page hidden">
       <!-- 累積残高ページ -->
       <div class="analytics-card" id="balance-card">
-        <p class="section-title">現在の累積残高</p>
+        <p class="section-title">これまでの累積残高</p>
 
         <p id="balance-el" class="balance-text">¥0</p>
 
