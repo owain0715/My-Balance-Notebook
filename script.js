@@ -1784,7 +1784,7 @@ function renderCalendar() {
         0,
       );
       const expenseTotalEl = document.createElement("p");
-      expenseTotalEl.textContent = `¥${expenseTotal.toLocaleString()}`;
+      expenseTotalEl.textContent = formatCompactYen(expenseTotal);
       expenseTotalEl.classList.add("calendar-expense");
 
       cell.append(expenseTotalEl);
@@ -1798,7 +1798,7 @@ function renderCalendar() {
       );
 
       const incomeTotalEl = document.createElement("p");
-      incomeTotalEl.textContent = `¥${incomeTotal.toLocaleString()}`;
+      incomeTotalEl.textContent = formatCompactYen(incomeTotal);
       incomeTotalEl.classList.add("calendar-income");
 
       cell.append(incomeTotalEl);
@@ -1806,6 +1806,15 @@ function renderCalendar() {
     grid.append(cell);
   }
   calendarEl.append(grid);
+}
+
+//〇〇k表示
+function formatCompactYen(amount) {
+  if (amount >= 1000) {
+    return `¥${(amount / 1000).toFixed(1)}k`.replace(".0k", "k");
+  }
+
+  return `¥${amount}`;
 }
 
 //初期表示のrender必須！
