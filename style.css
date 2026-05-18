@@ -1270,7 +1270,7 @@ input,
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 2px;
+  gap: 4px;
 }
 
 .calendar-grid {
@@ -1279,24 +1279,27 @@ input,
 }
 
 .calendar-header div {
+  color: #8d84a8;
+  font-size: 13px;
+  font-weight: 700;
   text-align: center;
-  font-weight: 600;
-  color: #7a7090;
-  font-size: 15px;
 }
 
 .calendar-cell {
   height: 100px;
   padding: 6px;
 
-  border: 1px solid rgba(180, 180, 180, 0.2);
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.5);
 
-  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+
+  border-radius: 14px;
+
+  backdrop-filter: blur(8px);
 
   box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    0 4px 10px rgba(175, 163, 212, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
 
   display: flex;
   flex-direction: column;
@@ -1310,36 +1313,35 @@ input,
 }
 
 .calendar-expense {
-  color: rgb(202, 48, 48);
-  background: rgba(255, 80, 80, 0.12);
+  color: #c56a7f;
+  background: rgba(213, 120, 145, 0.14);
 }
 
 .calendar-income {
-  color: rgb(70, 120, 255);
-  background: rgba(70, 120, 255, 0.12);
+  color: #6f86d6;
+  background: rgba(111, 134, 214, 0.14);
 }
 
 .calendar-expense,
 .calendar-income {
-  display: inline-flex;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 
-  max-width: 100%;
+  width: 100%;
 
-  padding: 2px 6px;
+  font-size: 9px;
+  text-align: center;
+
+  padding: 3px 4px;
   border-radius: 999px;
 
-  font-size: 8px;
-  font-weight: bold;
-
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .calendar-cell p:first-child {
-  color: #666;
-  font-size: 14px;
+  color: #7c7394;
+  font-weight: 600;
 }
 
 #calendar-legend {
@@ -1372,6 +1374,13 @@ input,
 }
 
 .today {
-  border: 2px solid #afa3d4;
-  background: rgba(175, 163, 212, 0.15);
+  border: 2px solid rgba(175, 163, 212, 0.8);
+
+  background: linear-gradient(
+    180deg,
+    rgba(175, 163, 212, 0.18),
+    rgba(255, 255, 255, 0.35)
+  );
+
+  box-shadow: 0 0 0 3px rgba(175, 163, 212, 0.12);
 }
