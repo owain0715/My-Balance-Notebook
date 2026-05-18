@@ -1328,14 +1328,11 @@ input,
 
   width: 100%;
 
-  font-size: 8px;
+  font-size: 9px;
   text-align: center;
 
   padding: 3px 4px;
   border-radius: 999px;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .calendar-cell p:first-child {
