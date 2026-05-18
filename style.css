@@ -1286,7 +1286,7 @@ input,
 }
 
 .calendar-cell {
-  height: 100px;
+  min-height: 100px;
   padding: 6px;
 
   background: rgba(255, 255, 255, 0.5);
@@ -1304,8 +1304,6 @@ input,
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  transition: 0.2s;
 }
 
 .calendar-cell p {
@@ -1313,12 +1311,12 @@ input,
 }
 
 .calendar-expense {
-  color: #c56a7f;
+  color: rgb(208, 73, 138);
   background: rgba(213, 120, 145, 0.14);
 }
 
 .calendar-income {
-  color: #6f86d6;
+  color: rgb(115, 118, 207);
   background: rgba(111, 134, 214, 0.14);
 }
 
@@ -1330,13 +1328,14 @@ input,
 
   width: 100%;
 
-  font-size: 9px;
+  font-size: 8px;
   text-align: center;
 
   padding: 3px 4px;
   border-radius: 999px;
 
-  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .calendar-cell p:first-child {
@@ -1366,11 +1365,11 @@ input,
 }
 
 .expense .legend-dot {
-  background: rgb(202, 48, 48);
+  background: rgb(208, 73, 138);
 }
 
 .income .legend-dot {
-  background: rgb(70, 120, 255);
+  background: rgb(115, 118, 207);
 }
 
 .today {
