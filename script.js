@@ -1,7 +1,7 @@
 "use strict";
 
 //取得ゾーン
-const input = document.getElementById("expense-category-input");
+const expenseInput = document.getElementById("expense-category-input");
 const expenseAddBtn = document.getElementById("expense-add-btn");
 
 const expenseCategoryListUl = document.getElementById("expense-category-list");
@@ -354,7 +354,7 @@ function renderTotalIncome() {
 
 //支出カテゴリー追加イベント
 expenseAddBtn.addEventListener("click", () => {
-  const text = input.value.trim();
+  const text = expenseInput.value.trim();
   const isFixed = expenseTypeSelect.value === "fixed";
 
   //空白・同じ名前ならreturn
@@ -373,7 +373,7 @@ expenseAddBtn.addEventListener("click", () => {
 
   render();
 
-  input.value = ""; //入力欄を空にして綺麗に
+  expenseInput.value = ""; //入力欄を空にして綺麗に
 });
 
 //支出追加ボタンイベント
