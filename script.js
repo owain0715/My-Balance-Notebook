@@ -2,40 +2,40 @@
 
 //取得ゾーン
 const input = document.getElementById("expense-category-input");
-const addBtn = document.getElementById("addBtn");
+const expenseAddBtn = document.getElementById("expense-add-btn");
 
-const categoryListUl = document.getElementById("category-list");
+const expenseCategoryListUl = document.getElementById("expense-category-list");
 const form = document.getElementById("expense-form");
 
 const totalExpenseSumEl = document.getElementById("total-expense-sum");
-const expenseAmountInput = document.getElementById("amount-input");
-const amountBtn = document.getElementById("amountBtn");
-const amountHeader = document.getElementById("amount-header");
-const amountList = document.getElementById("amount-list");
+const expenseAmountInput = document.getElementById("expense-amount-input");
+const expenseAmountBtn = document.getElementById("expense-amount-btn");
+const expenseAmountHeader = document.getElementById("expense-amount-header");
+const expenseAmountList = document.getElementById("expense-amount-list");
 
 const expensesSumEl = document.getElementById("expense-sum");
 const limitInput = document.getElementById("expense-limit-input");
-const limitBtn = document.getElementById("limitBtn");
+const limitBtn = document.getElementById("limit-btn");
 const limitUl = document.getElementById("limit-ul");
 const progressEl = document.getElementById("progress");
 const alertEl = document.getElementById("alert");
 const dayProgress = document.getElementById("day-progress");
-const memoInput = document.getElementById("memo-input");
+const expenseMemoInput = document.getElementById("expense-memo-input");
 const monthlyReport = document.getElementById("monthly-report");
-const editAmountInput = document.getElementById("edit-amount");
-const editMemoInput = document.getElementById("edit-memo");
-const saveBtn = document.getElementById("save-btn");
-const editModal = document.getElementById("edit-modal");
-const cancelBtn = document.getElementById("cancel-btn");
+const expenseEditAmountInput = document.getElementById("expense-edit-amount");
+const expenseEditMemoInput = document.getElementById("expense-edit-memo");
+const expenseSaveBtn = document.getElementById("expense-save-btn");
+const expenseEditModal = document.getElementById("expense-edit-modal");
+const expenseCancelBtn = document.getElementById("expense-cancel-btn");
 const limitArea = document.getElementById("expense-limit-area");
 const progressArea = document.getElementById("progress-area");
 const fixedMessage = document.getElementById("fixed-message");
 const prevMonthBtn = document.getElementById("prev-month");
 const currentMonthEl = document.getElementById("current-month");
 const nextMonthBtn = document.getElementById("next-month");
-const expenseDateInput = document.getElementById("date-input");
-const expenseListToggleBtn = document.getElementById("list-toggle-btn");
-const typeSelect = document.getElementById("type-select");
+const expenseDateInput = document.getElementById("expense-date-input");
+const expenseListToggleBtn = document.getElementById("expense-list-toggle-btn");
+const expenseTypeSelect = document.getElementById("expense-type-select");
 const buttons = document.querySelectorAll("#menu-buttons button");
 const pages = document.querySelectorAll(".page");
 
@@ -140,7 +140,7 @@ let isExpenseCategoryOpen = true;
 expenseCategoryToggleBtn.addEventListener("click", () => {
   isExpenseCategoryOpen = !isExpenseCategoryOpen;
 
-  categoryListUl.classList.toggle("closed");
+  expenseCategoryListUl.classList.toggle("closed");
 
   expenseCategoryToggleBtn.textContent = isExpenseCategoryOpen
     ? "支出カテゴリを非表示にする"
@@ -353,9 +353,9 @@ function renderTotalIncome() {
 }
 
 //支出カテゴリー追加イベント
-addBtn.addEventListener("click", () => {
+expenseAddBtn.addEventListener("click", () => {
   const text = input.value.trim();
-  const isFixed = typeSelect.value === "fixed";
+  const isFixed = expenseTypeSelect.value === "fixed";
 
   //空白・同じ名前ならreturn
   if (text === "") return;
@@ -377,7 +377,7 @@ addBtn.addEventListener("click", () => {
 });
 
 //支出追加ボタンイベント
-amountBtn.addEventListener("click", handleAddExpense);
+expenseAmountBtn.addEventListener("click", handleAddExpense);
 
 //Enter対応
 function handleAddExpense() {
@@ -394,7 +394,7 @@ function handleAddExpense() {
     id: Date.now(),
     categoryId: selectedExpenseCategoryId,
     amount: amount,
-    memo: memoInput.value.trim() || "(未入力)",
+    memo: expenseMemoInput.value.trim() || "(未入力)",
     date: expenseDateInput.value || new Date().toISOString().slice(0, 10),
   });
 
@@ -403,7 +403,7 @@ function handleAddExpense() {
 
   render();
 
-  memoInput.value = "";
+  expenseMemoInput.value = "";
   expenseAmountInput.value = "";
 
   //入力後はメモ欄にフォーカス、日付も今日に戻す（ユーザー体験の向上）
@@ -412,7 +412,7 @@ function handleAddExpense() {
   resetDateInput();
 }
 
-[memoInput, expenseAmountInput].forEach((input) => {
+[expenseMemoInput, expenseAmountInput].forEach((input) => {
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       handleAddExpense();
@@ -449,26 +449,26 @@ nextMonthBtn.addEventListener("click", () => {
 
 //支出モーダルに編集値を入れる関数
 function openExpenseEditModal(expense) {
-  editAmountInput.value = expense.amount;
-  editMemoInput.value = expense.memo;
+  expenseEditAmountInput.value = expense.amount;
+  expenseEditMemoInput.value = expense.memo;
   editingExpenseId = expense.id;
 
-  editModal.classList.remove("hidden");
+  expenseEditModal.classList.remove("hidden");
   //開いた瞬間にamount部分がセレクトされるのでユーザーが迷わない仕様に
-  editAmountInput.focus();
+  expenseEditAmountInput.focus();
 }
 
 //支出モーダル編集後保存処理
-saveBtn.addEventListener("click", () => {
+expenseSaveBtn.addEventListener("click", () => {
   //収入編集
   if (editingIncomeId !== null) {
-    if (editMemoInput.value.trim() === "") return;
+    if (expenseEditMemoInput.value.trim() === "") return;
 
     const target = incomes.find((i) => i.id === editingIncomeId);
     if (!target) return;
 
-    target.memo = editMemoInput.value;
-    target.amount = Number(editAmountInput.value);
+    target.memo = expenseEditMemoInput.value;
+    target.amount = Number(expenseEditAmountInput.value);
 
     localStorage.setItem("incomesData", JSON.stringify(incomes));
 
@@ -482,8 +482,8 @@ saveBtn.addEventListener("click", () => {
 
   if (!target) return;
 
-  target.amount = Number(editAmountInput.value);
-  target.memo = editMemoInput.value;
+  target.amount = Number(expenseEditAmountInput.value);
+  target.memo = expenseEditMemoInput.value;
 
   localStorage.setItem("expenses", JSON.stringify(expenses));
 
@@ -514,7 +514,7 @@ incomeSaveBtn.addEventListener("click", handleIncomeSave);
 
 //モーダルを閉じる関数
 function closeEditModal() {
-  editModal.classList.add("hidden");
+  expenseEditModal.classList.add("hidden");
   editingExpenseId = null;
 }
 
@@ -524,7 +524,7 @@ function closeIncomeEditModal() {
 }
 
 //キャンセルボタンでモーダルを閉じる
-cancelBtn.addEventListener("click", () => {
+expenseCancelBtn.addEventListener("click", () => {
   closeEditModal();
 });
 
@@ -669,7 +669,7 @@ function createViewState() {
 //カテゴリー描画
 function renderCategoryList(state) {
   //一旦空にする
-  categoryListUl.innerHTML = "";
+  expenseCategoryListUl.innerHTML = "";
 
   //選択したidがnullじゃなかったらhiddenを解く→表示
   if (state.selectedCategory) {
@@ -731,7 +731,7 @@ function renderCategoryList(state) {
       li.append(deleteBtn);
     }
 
-    categoryListUl.append(li);
+    expenseCategoryListUl.append(li);
   });
 }
 
@@ -1028,18 +1028,18 @@ function createMeta() {
 //支出リスト描画
 function renderExpenseList(state) {
   //支出追加ボタン・categories.forEachの外に出す
-  amountList.innerHTML = "";
+  expenseAmountList.innerHTML = "";
 
   const hasData = state.filtered.length > 0;
 
   if (!hasData) {
-    amountHeader.classList.add("hidden");
-    amountList.classList.add("hidden");
+    expenseAmountHeader.classList.add("hidden");
+    expenseAmountList.classList.add("hidden");
     expensesSumEl.classList.add("hidden");
     return;
   } else {
-    amountHeader.classList.remove("hidden");
-    amountList.classList.remove("hidden");
+    expenseAmountHeader.classList.remove("hidden");
+    expenseAmountList.classList.remove("hidden");
     expensesSumEl.classList.remove("hidden");
   }
 
@@ -1119,7 +1119,7 @@ function renderExpenseList(state) {
 
       card.append(dateEl);
       card.append(innerUl);
-      amountList.append(card);
+      expenseAmountList.append(card);
     });
 
   expensesSumEl.innerHTML = `
@@ -1175,12 +1175,12 @@ function renderExpenseList(state) {
     }
 
     diffEl.classList.add("monthly-diff");
-    amountList.append(diffEl);
+    expenseAmountList.append(diffEl);
   }
 
   // ユーザーの開閉状態を維持
   //render がDOM状態を作り直すたびに、「現在の開閉状態」を再適用し直す必要がある
-  amountList.classList.toggle("closed", !isExpenseOpen);
+  expenseAmountList.classList.toggle("closed", !isExpenseOpen);
 
   expenseListToggleBtn.textContent = isExpenseOpen
     ? "▼ 支出を隠す"
@@ -1381,7 +1381,7 @@ function getCategoryMonthlyData(expense, categoryId, year, month) {
 expenseListToggleBtn.addEventListener("click", () => {
   isExpenseOpen = !isExpenseOpen;
 
-  amountList.classList.toggle("closed");
+  expenseAmountList.classList.toggle("closed");
 
   expenseListToggleBtn.textContent = isExpenseOpen
     ? "▼ 支出を隠す"
