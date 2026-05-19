@@ -1447,6 +1447,7 @@ function renderBalance() {
   } else {
     balanceEl.classList.add("minus");
     balanceMessage.textContent = "少し支出を見直してみましょう";
+    balanceMessage.classList.add("marker");
   }
 }
 
