@@ -1,10 +1,11 @@
+/* ここから全体共通装飾 */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-/* ベースデザイン */
+/* ベースの色味とデザインの指定 */
 :root {
   /* color */
   --color-bg: rgba(255, 255, 255, 0.6);
@@ -45,7 +46,6 @@ body {
 
   line-height: 1.5;
 
-  width: 100%;
   max-width: 420px;
   margin: 0 auto;
 
@@ -53,8 +53,6 @@ body {
   flex-direction: column;
 
   min-height: 100vh;
-
-  overflow-x: hidden;
   overscroll-behavior-x: none;
 
   position: relative;
@@ -68,7 +66,7 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* スマホ操作時に勝手にズームされないように調整 */
+/* スマホ操作時に勝手にズームされないようにフォントサイズを調整する */
 input,
 select,
 textarea {
@@ -83,13 +81,8 @@ li {
   list-style: none;
 }
 
-.hidden {
-  display: none !important;
-}
-
 input {
   width: 100px;
-  max-width: 200px;
 
   padding: 10px 12px;
   margin-top: 8px;
@@ -114,12 +107,6 @@ input::placeholder {
   color: #aaa;
 }
 
-.selected {
-  border: 2px solid var(--accent);
-  background: rgba(175, 163, 212, 0.15);
-  font-weight: bold;
-}
-
 button {
   border: none;
   cursor: pointer;
@@ -133,6 +120,145 @@ button {
 button:hover {
   opacity: 0.9;
 }
+
+.hidden {
+  display: none !important;
+}
+
+.selected {
+  border: 2px solid var(--accent);
+  background: rgba(175, 163, 212, 0.15);
+  font-weight: bold;
+}
+
+.primary-btn {
+  margin: 12px 0 20px;
+  width: 100%;
+}
+
+.form-box {
+  background: rgba(255, 255, 255, 0.25);
+
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  padding: 16px;
+  margin-top: 16px;
+  gap: 10px;
+}
+
+.sum-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #777;
+
+  letter-spacing: 0.5px;
+
+  margin: 4px 0 12px;
+  padding: 0;
+
+  background: none;
+
+  border-radius: 8px;
+
+  display: block;
+  text-align: right;
+}
+
+.category-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  padding: 10px 4px;
+  gap: 10px;
+
+  font-size: 11px;
+}
+
+.category-list li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  padding: 12px 6px;
+  min-height: 40px;
+
+  font-size: 12px;
+
+  border-radius: 10px;
+
+  background: var(--color-bg);
+}
+
+.category-list li:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.category-list li:hover .delete-btn {
+  background: rgba(222, 118, 118, 0.2);
+  color: #de7676;
+  opacity: 1;
+}
+
+.input-area {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.input-area input {
+  flex: 1;
+  min-width: 120px;
+}
+
+.category-area {
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.amount-list {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  background: var(--color-bg);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.amount-list .card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(175, 163, 212, 0.25);
+}
+
+.amount-list .card-date {
+  margin-top: 12px;
+}
+
+.amount-list.closed {
+  max-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.amount-list.hidden {
+  padding: 0;
+  margin: 0;
+}
+
+/* 全体共通装飾ここまで */
 
 /* カテゴリの表示/非表示 */
 .section-header {
@@ -163,7 +289,7 @@ button:hover {
   transform: scale(0.96);
 }
 
-#category-list.closed {
+#expense-category-list.closed {
   display: none;
 }
 
@@ -242,15 +368,6 @@ button:hover {
   font-weight: bold;
 }
 
-/* カテゴリー一覧エリア */
-#category-area {
-  background: var(--color-bg);
-
-  border-radius: var(--radius-md);
-  padding: 12px;
-  margin-bottom: 16px;
-}
-
 /* カテゴリー追加欄 */
 #category-input {
   display: flex;
@@ -262,40 +379,11 @@ button:hover {
   flex: 1;
 }
 
-#addBtn {
+#expense-add-btn {
   white-space: nowrap;
 }
 
-#category-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-
-  padding: 10px 4px;
-  gap: 10px;
-
-  font-size: 11px;
-}
-
-#category-list li {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-
-  padding: 12px 6px;
-  min-height: 40px;
-
-  font-size: 12px;
-
-  border-radius: 10px;
-
-  background: var(--color-bg);
-}
-
-#type-select {
+#expense-type-select {
   /* デフォルトデザインを消す */
   appearance: none;
   -webkit-appearance: none;
@@ -316,13 +404,9 @@ button:hover {
   cursor: pointer;
 }
 
-#type-select:focus {
+#expense-type-select:focus {
   border: 1px solid var(--accent);
   box-shadow: 0 0 0 2px rgba(175, 163, 212, 0.2);
-}
-
-#category-list li:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .delete-btn {
@@ -346,12 +430,6 @@ button:hover {
 
   padding: 0;
   box-shadow: none;
-}
-
-#category-list li:hover .delete-btn {
-  background: rgba(222, 118, 118, 0.2);
-  color: #de7676;
-  opacity: 1;
 }
 
 /* limit/forecastエリア */
@@ -402,24 +480,6 @@ button:hover {
   min-height: 0;
 }
 
-#expense-sum {
-  font-size: 16px;
-  font-weight: bold;
-  color: #777;
-
-  letter-spacing: 0.5px;
-
-  margin: 4px 0 12px;
-  padding: 0;
-
-  background: none;
-
-  border-radius: 8px;
-
-  display: block;
-  text-align: right;
-}
-
 .sum-amount {
   font-size: 20px;
   font-weight: 700;
@@ -439,66 +499,11 @@ button:hover {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }
 
-#expense-form {
-  background: rgba(255, 255, 255, 0.25);
-
-  border-radius: var(--radius-md);
-  padding: 16px;
-  margin-top: 16px;
-  gap: 10px;
-
-  border: 1px solid var(--color-border);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
 #expense-form input {
   max-width: 100%;
 }
 
-/* 支出リスト(card部分) */
-#amountBtn {
-  margin: 12px 0 20px;
-  width: 100%;
-}
-
-#amount-list {
-  min-height: 0;
-  max-height: 60vh;
-  overflow-y: auto;
-  scrollbar-width: thin;
-
-  -webkit-overflow-scrolling: touch;
-
-  background: var(--color-bg);
-
-  padding: 12px 12px 24px;
-  margin-bottom: 16px;
-  border-radius: 10px;
-
-  justify-content: space-between;
-  align-items: center;
-
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-#amount-list.closed {
-  max-height: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-#expense-input-area {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-#expense-input-area input {
-  flex: 1;
-  min-width: 120px;
-}
-
-#date-input,
+#expense-date-input,
 #income-date-input {
   padding: 10px 12px;
   border-radius: 10px;
@@ -513,18 +518,18 @@ button:hover {
   min-width: 140px;
 }
 
-#amount-header {
+#expense-amount-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-#amount-title {
+#expense-amount-title {
   font-size: 18px;
   font-weight: bold;
 }
 
-#list-toggle-btn {
+#expense-list-toggle-btn {
   padding: 6px 10px;
   font-size: 13px;
   cursor: pointer;
@@ -564,32 +569,6 @@ button:hover {
   position: absolute;
   top: -6px;
   right: 6px;
-}
-
-.monthly-diff {
-  margin-top: 16px;
-  padding: 14px 16px;
-  border-radius: 14px;
-
-  font-size: 0.9rem;
-  font-weight: 600;
-  line-height: 1.6;
-
-  text-align: center;
-
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.monthly-diff-plus {
-  background: rgba(255, 120, 120, 0.12);
-  color: rgb(200, 60, 60);
-  border: 1px solid rgba(255, 120, 120, 0.25);
-}
-
-.monthly-diff-minus {
-  background: rgba(120, 220, 160, 0.15);
-  color: rgb(40, 140, 90);
-  border: 1px solid rgba(120, 220, 160, 0.3);
 }
 
 .diff-price {
@@ -866,18 +845,11 @@ button:hover {
 }
 
 /* キャンセルは控えめに */
-#cancel-btn,
+#expense-cancel-btn,
 #income-cancel-btn {
   background: rgba(0, 0, 0, 0.05);
   color: #666;
   box-shadow: none;
-}
-
-/* 収入管理ゾーン */
-#income-amount-list.closed {
-  max-height: 0;
-  padding: 0;
-  overflow: hidden;
 }
 
 #income-header {
@@ -898,130 +870,11 @@ button:hover {
   font-size: 13px;
 }
 
-#income-category-area {
-  background: var(--color-bg);
-  border-radius: var(--radius-md);
-  padding: 12px;
-  margin-bottom: 16px;
-}
-
 #income-category-input-area {
   background: var(--color-bg);
   border-radius: var(--radius-md);
   padding: 12px;
   margin: 16px 0;
-}
-
-#income-category-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-}
-
-#income-category-list li {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-
-  padding: 12px 6px;
-  min-height: 40px;
-
-  font-size: 12px;
-
-  border-radius: 10px;
-
-  background: var(--color-bg);
-}
-
-#income-category-list li:hover .delete-btn {
-  background: rgba(222, 118, 118, 0.2);
-  color: #de7676;
-  opacity: 1;
-}
-
-#income-category-list li:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-#income-form {
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  margin-top: 16px;
-
-  border: 1px solid var(--color-border);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-#income-input-area {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-#income-input-area input {
-  flex: 1;
-  max-width: none;
-}
-
-#income-amount-list .card {
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(175, 163, 212, 0.2);
-}
-
-#income-amount-list.hidden {
-  padding: 0;
-  margin: 0;
-}
-
-#income-amount-btn {
-  margin: 12px 0 20px;
-  width: 100%;
-}
-
-#income-amount-list {
-  max-height: 60vh;
-  overflow-y: auto;
-  padding: 10px;
-  margin-bottom: 8px;
-  border-radius: 10px;
-  background: var(--color-bg);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-#income-amount-list .card {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(175, 163, 212, 0.25);
-}
-
-#income-amount-list .card-date {
-  margin-top: 12px;
-}
-
-#income-sum {
-  font-size: 16px;
-  font-weight: bold;
-  color: #777;
-
-  letter-spacing: 0.5px;
-
-  margin: 4px 0 12px;
-  padding: 0;
-
-  background: none;
-
-  border-radius: 8px;
-
-  display: block;
-  text-align: right;
-}
-
-.sum-amount {
-  font-size: 20px;
-  font-weight: 700;
 }
 
 /* 円グラフ */
@@ -1111,7 +964,7 @@ button:hover {
 }
 
 .analytics-card {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.95);
   border-radius: var(--radius-md);
   padding: 16px 14px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -1181,31 +1034,20 @@ button:hover {
 #ranking p {
   margin: 4px 0;
 }
-
-#expense-input-area,
-#income-input-area {
-  min-width: 0;
-  flex-wrap: wrap;
-}
-
 /* 背景を軽量化 */
 .card,
 .analytics-card,
-#amount-list,
-#income-amount-list,
 #expense-form,
 #income-form,
 #progress-area,
-#category-area,
-#income-category-area,
 #income-category-input-area {
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
 }
 
 /* フォーム */
 input,
-#date-input,
-#type-select {
+#expense-date-input,
+#expense-type-select {
   background: rgba(255, 255, 255, 0.95);
 
   border: 1px solid rgba(0, 0, 0, 0.06);
@@ -1235,14 +1077,7 @@ input,
   transform: none;
 }
 
-/* analytics軽量化 */
-.analytics-card {
-  background: rgba(255, 255, 255, 0.95);
-}
-
 /* スクロール改善 */
-#amount-list,
-#income-amount-list,
 #expenses-page {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
@@ -1258,7 +1093,7 @@ input,
 }
 
 /* placeholderの文字調整 */
-#category-input-area input::placeholder,
+#expense-category-input-area input::placeholder,
 #expense-input-area input::placeholder,
 #income-category-input-area input::placeholder,
 #income-input-area input::placeholder {
