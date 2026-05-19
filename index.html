@@ -3,70 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>私のバランスノート</title>
+    <title>My Balance Note</title>
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
+
   <body>
-    <!-- 月切り替えゾーン -->
+    <!-- ここからページ上部/表示月切り替えエリア -->
     <nav id="month-nav">
       <button id="prev-month">←</button>
       <span id="current-month"></span>
       <button id="next-month">→</button>
     </nav>
+    <!-- ページ上部/表示月切り替えエリアここまで -->
 
+    <!-- ここから支出エリア -->
     <div id="expenses-page" class="page">
       <div id="total-expense-sum"></div>
 
-      <!-- 支出カテゴリページ -->
-      <section id="category-area">
+      <!-- 支出カテゴリエリア -->
+      <section id="expense-category-area" class="category-area">
         <div class="section-header">
           <button id="expense-category-toggle-btn" class="toggle-btn">
             支出カテゴリを非表示にする
           </button>
         </div>
 
-        <div id="category-input-area">
+        <!-- 支出カテゴリ追加エリア -->
+        <div id="expense-category-input-area">
           <input
             id="expense-category-input"
             type="text"
             placeholder="支出カテゴリ"
           />
-          <select id="type-select">
+          <select id="expense-type-select">
             <option value="variable">変動費</option>
             <option value="fixed">固定費</option>
           </select>
-          <button id="addBtn">追加</button>
+          <button id="expense-add-btn">追加</button>
         </div>
 
-        <ul id="category-list"></ul>
+        <ul id="expense-category-list" class="category-list"></ul>
       </section>
 
-      <!-- 上限設定 -->
-      <section id="expense-form" class="hidden">
+      <!-- 支出上限設定エリア -->
+      <section id="expense-form" class="hidden form-box">
         <div id="expense-limit-area">
           <p class="form-section-title">今月の使用上限を設定しましょう</p>
           <p class="section-guide">選択中のカテゴリごとに上限を設定できます</p>
           <input id="expense-limit-input" type="number" placeholder="金額" />
-          <button id="limitBtn">上限を設定</button>
+          <button id="limit-btn">上限を設定</button>
           <ul id="limit-ul"></ul>
         </div>
 
-        <!-- 支出入力欄 -->
+        <!-- 支出入力エリア -->
         <div class="input-card">
           <p class="form-section-title">支出を追加しましょう</p>
           <p class="section-guide">追加した支出は下部のリストに蓄積されます</p>
-          <div id="expense-input-area">
-            <input id="memo-input" type="text" placeholder="内容" />
-            <input id="amount-input" type="number" placeholder="金額" />
-            <input type="date" id="date-input" />
+
+          <div id="expense-input-area" class="input-area">
+            <input id="expense-memo-input" type="text" placeholder="内容" />
+            <input id="expense-amount-input" type="number" placeholder="金額" />
+            <input type="date" id="expense-date-input" />
           </div>
 
           <div>
-            <button id="amountBtn">追加</button>
+            <button id="expense-amount-btn" class="primary-btn">追加</button>
           </div>
 
-          <!-- 進捗 -->
+          <!-- 進捗確認エリア -->
           <div id="progress-area">
             <p class="section-guide">
               今月の使用ペースをチェックしましょう💡<br />
@@ -94,77 +99,83 @@
               <span>100%</span>
             </div>
 
+            <!-- 見込みエリア -->
             <div id="forecast-area"></div>
           </div>
         </div>
 
-        <!-- 固定費メッセージ -->
+        <!-- 固定費メッセージエリア -->
         <p id="fixed-message"></p>
 
-        <!-- 支出インラインモーダル -->
-        <div id="edit-modal" class="modal modal-purple hidden">
+        <!-- 支出編集モーダルエリア -->
+        <div id="expense-edit-modal" class="modal modal-purple hidden">
           <div class="modal-content">
-            <p id="modal-title">【支出を編集してください】</p>
+            <h3 id="expense-modal-title">【支出を編集してください】</h3>
 
             <label>
               メモ：
-              <input id="edit-memo" type="text" />
+              <input id="expense-edit-memo" type="text" />
             </label>
 
             <label>
               金額：
-              <input id="edit-amount" type="number" />
+              <input id="expense-edit-amount" type="number" />
             </label>
 
             <div class="modal-actions">
-              <button id="save-btn">変更を保存</button>
-              <button id="cancel-btn">キャンセル</button>
+              <button id="expense-save-btn">変更を保存</button>
+              <button id="expense-cancel-btn">キャンセル</button>
             </div>
           </div>
         </div>
 
-        <!-- 支出リスト -->
-        <div id="amount-header">
-          <span id="amount-title" class="marker">今月の支出リスト</span>
-          <button id="list-toggle-btn">▶ 支出を表示</button>
+        <!-- 支出リストエリア -->
+        <div id="expense-amount-header">
+          <h3 id="expense-amount-title" class="marker">今月の支出リスト</h3>
+          <button id="expense-list-toggle-btn">▶ 支出を表示</button>
         </div>
 
-        <ul id="amount-list" class="closed"></ul>
-        <p id="expense-sum"></p>
+        <ul id="expense-amount-list" class="closed amount-list"></ul>
+        <p id="expense-sum" class="sum-text"></p>
       </section>
     </div>
+    <!-- 支出エリアここまで -->
 
-    <!-- incomeエリア -->
+    <!-- ここから収入エリア -->
     <div id="income-page" class="page hidden">
       <div id="total-income-sum"></div>
-      <!-- 収入カテゴリ入力 -->
-      <div id="income-category-area">
+
+      <!-- 収入カテゴリエリア -->
+      <section id="income-category-area" class="category-area">
         <button id="income-category-toggle-btn" class="toggle-btn">
           収入カテゴリを非表示にする
         </button>
+
+        <!-- 収入カテゴリ追加エリア -->
         <div id="income-category-input-area">
           <input id="income-input" type="text" placeholder="収入カテゴリ" />
           <button id="income-add-btn">追加</button>
         </div>
-        <ul id="income-category-list" class="hidden"></ul>
-      </div>
+        <ul id="income-category-list" class="hidden category-list"></ul>
+      </section>
 
-      <!-- 金額入力 -->
-      <section id="income-form" class="hidden">
+      <!-- 収入入力エリア -->
+      <section id="income-form" class="hidden form-box">
         <div class="input-card">
           <p class="form-section-title">収入を追加しましょう</p>
           <p class="section-guide">追加した収入は下部のリストに蓄積されます</p>
-          <div id="income-input-area">
+          <div id="income-input-area" class="input-area">
             <input id="income-memo-input" type="text" placeholder="内容" />
             <input id="income-amount-input" type="number" placeholder="金額" />
             <input id="income-date-input" type="date" />
           </div>
-          <button id="income-amount-btn">追加</button>
+          <button id="income-amount-btn" class="primary-btn">追加</button>
         </div>
 
+        <!-- 収入編集モーダルエリア -->
         <div id="income-edit-modal" class="modal modal-purple hidden">
           <div class="modal-content">
-            <p id="income-modal-title">【収入を編集してください】</p>
+            <h3 id="income-modal-title">【収入を編集してください】</h3>
             <label>
               メモ：
               <input id="income-edit-memo" type="text" />
@@ -182,18 +193,21 @@
           </div>
         </div>
 
+        <!-- 収入リストエリア -->
         <div id="income-header">
-          <span id="income-amount-title" class="marker">今月の収入リスト</span>
+          <h3 id="income-amount-title" class="marker">今月の収入リスト</h3>
           <button id="income-list-toggle-btn">▶ 収入を表示</button>
         </div>
 
-        <ul id="income-amount-list" class="closed"></ul>
-        <p id="income-sum"></p>
+        <ul id="income-amount-list" class="closed amount-list"></ul>
+        <p id="income-sum" class="sum-text"></p>
       </section>
     </div>
+    <!-- 収入エリアここまで -->
 
+    <!-- ここからアナリティクスエリア -->
     <section id="analytics-page" class="page hidden">
-      <!-- 累積残高ページ -->
+      <!-- 累積残高エリア -->
       <div class="analytics-card" id="balance-card">
         <p class="section-title">これまでの累積残高</p>
 
@@ -202,28 +216,27 @@
         <p id="balance-message" class="balance-message"></p>
       </div>
 
-      <!-- アナリティクスページ・円グラフ -->
-      <div>
-        <div class="analytics-card">
-          <p class="sub-text">
-            🔍
-            <span class="marker"
-              >今月はどこにお金を使っているか見てみましょう！</span
-            >
-          </p>
-          <h3 class="section-title">カテゴリ別支出</h3>
-          <canvas id="pie-chart"></canvas>
-        </div>
+      <!-- 円グラフエリア -->
+      <div class="analytics-card">
+        <p class="sub-text">
+          🔍
+          <span class="marker"
+            >今月はどこにお金を使っているか見てみましょう！</span
+          >
+        </p>
+        <h3 class="section-title">カテゴリ別支出</h3>
+        <canvas id="pie-chart"></canvas>
       </div>
 
+      <!-- 折れ線グラフエリア -->
       <div class="analytics-card">
-        <div id="line-graph">
+        <div class="line-graph-area">
           <h3 class="section-title">収支の推移</h3>
           <canvas id="line-chart"></canvas>
         </div>
       </div>
 
-      <!-- 月別 -->
+      <!-- 先月/前月支出比較エリア -->
       <section id="monthly-data">
         <div class="analytics-card">
           <h3 class="section-title">先月との支出比較</h3>
@@ -231,15 +244,14 @@
         </div>
       </section>
 
-      <!-- 使いすぎ/節約ランキング -->
+      <!-- 浪費/節約ランキングエリア -->
       <div id="ranking" class="analytics-card"></div>
     </section>
+    <!-- アナリティクスエリアここまで -->
 
-    <!-- カレンダー -->
+    <!-- ここからカレンダーエリア -->
     <section id="calendar-page" class="page hidden">
       <div class="calendar-card">
-        <!-- <h3 class="section-title">カレンダー</h3> -->
-
         <!-- アイコン部分 legend-->
         <div id="calendar-legend">
           <div class="legend-item expense">
@@ -256,13 +268,16 @@
         <div id="calendar"></div>
       </div>
     </section>
+    <!-- カレンダーエリアここまで -->
 
+    <!-- ここからメニューボタンエリア -->
     <nav id="menu-buttons">
       <button data-page="expenses">支出管理💸</button>
       <button data-page="income">収入管理💵</button>
       <button data-page="analytics">分析💹</button>
       <button data-page="calendar">カレンダー🗓</button>
     </nav>
+    <!-- メニューボタンエリアここまで -->
 
     <!-- DOMより後に実行する -->
     <script src="script.js" defer></script>
